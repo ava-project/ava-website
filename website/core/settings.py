@@ -15,7 +15,7 @@ import os
 env = os.environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = '/app'
 
 
 # Quick-start development settings - unsuitable for production
@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'main',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -84,6 +86,9 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': 'db',
         'PORT': '3306',
+        'OPTIONS': {
+            'sql_mode': 'traditional'
+        }
     }
 }
 
