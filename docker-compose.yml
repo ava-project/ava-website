@@ -12,14 +12,9 @@ services:
             - db
 
     db:
-        image: mariadb
-        environment:
-            - MYSQL_ALLOW_EMPTY_PASSWORD=1
-            - MYSQL_DATABASE=ava
+        image: postgres
         volumes:
-            - db-data:/var/lib/mysql
-        ports:
-            - 3307:3306
+            - db-data:/var/lib/postgresql/data/
 
 volumes:
     db-data:

@@ -1,2 +1,2 @@
 django>=1.10,<1.11
-mysqlclient
+psycopg2
