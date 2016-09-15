@@ -1,6 +1,6 @@
 from django.contrib import auth
 from django.contrib.auth.models import User
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 
 from . import forms
@@ -16,6 +16,7 @@ class RegisterView(TemplateView):
             data['email'],
             data['password']
         )
+        return redirect('main:index')
 
     def get(self, request, **kwargs):
         context = self.get_context_data(**kwargs)
@@ -26,6 +27,6 @@ class RegisterView(TemplateView):
         context = self.get_context_data(**kwargs)
         form = forms.RegisterForm(request.POST)
         if form.is_valid():
-            self.register_user(form)
+            return self.register_user(form)
         context['form'] = form
         return self.render_to_response(context)
