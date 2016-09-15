@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'main',
+    'user',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -87,6 +88,11 @@ DATABASES = {
         'PORT': 5432,
     }
 }
+
+# User Authentication
+AUTHENTICATION_BACKENDS = (
+    'user.backend.AuthenticationBackend',
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
