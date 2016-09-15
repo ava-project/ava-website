@@ -90,6 +90,7 @@ DATABASES = {
 }
 
 # User Authentication
+
 AUTHENTICATION_BACKENDS = (
     'user.backend.AuthenticationBackend',
 )
