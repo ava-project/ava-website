@@ -3,8 +3,8 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 
 class UsernameValidator(RegexValidator):
-    regex = '^[a-zA-Z0-9_.-]+$'
-    message = 'Username can only contains '
+    regex = '^[a-zA-Z0-9-]+$'
+    message = 'Username can only contains a-z, A-Z, -, 0-9'
 
 
 def emailUniqueValidator(email):
