@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.contrib.auth.models import User
 
 from ..forms import RegisterForm
@@ -7,6 +7,7 @@ class RegisterTest(TestCase):
 
     def setUp(self):
         User.objects.create_user('username', 'email@email.fr', 'password')
+        self.client = Client()
 
     def test_correct_registration(self):
         form_data = {
@@ -16,6 +17,8 @@ class RegisterTest(TestCase):
         }
         form = RegisterForm(data=form_data)
         self.assertTrue(form.is_valid())
+        response = self.client.post('/user/register', form_data)
+        self.assertEqual(response.status_code, 302)
 
     def test_empty_username(self):
         form_data = {
