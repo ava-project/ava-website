@@ -1,2 +1,4 @@
 django>=1.10,<1.11
+django-model-utils
 psycopg2
+pytz
