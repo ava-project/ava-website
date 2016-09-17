@@ -8,6 +8,8 @@ services:
             - 8000:8000
         volumes:
             - ./website:/app
+        environment:
+            - DJANGO_SETTINGS_MODULE=core.settings.dev
         depends_on:
             - db
 
