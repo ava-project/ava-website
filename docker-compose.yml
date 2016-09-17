@@ -14,6 +14,16 @@ services:
             - db
             - mail
 
+    test:
+        build: ./website
+        volumes:
+            - ./website:/app
+        environment:
+            - DJANGO_SETTINGS_MODULE=core.settings.test
+        command: python manage.py test
+        depends_on:
+            - db
+
     mail:
         image: schickling/mailcatcher
         ports:
