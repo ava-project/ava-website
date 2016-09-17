@@ -20,6 +20,12 @@ class EmailValidationToken(TimeStampedModel, models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     consumed = models.BooleanField(default=False)
 
+    def is_expired(self):
+        limit = self.created + datetime.timedelta(days=self.NB_DAY_EXPIRE)
+        if limit < timezone.now():
+            return True
+        return False
+
     def save(self, *args, **kwargs):
         self.token = crypto.get_random_string(length=50)
         self.expire = timezone.now() + datetime.timedelta(days=2)
