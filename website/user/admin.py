@@ -5,6 +5,6 @@ from .models import EmailValidationToken
 class EmailValidationTokenAdmin(admin.ModelAdmin):
     list_display = ('user', 'token', 'consumed')
     search_fields = ('user__username', 'token')
-    read_only = ('user', 'token', 'consumed')
+    readonly_fields = ('user', 'token', 'consumed',)
 
 admin.site.register(EmailValidationToken, EmailValidationTokenAdmin)
