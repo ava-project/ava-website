@@ -29,9 +29,9 @@ class EmailValidationToken(TimeStampedModel, models.Model):
 
     def is_valid(self, email):
         if self.consumed\
-            or email == self.user.profile.email_await_validation\
+            or email != self.user.profile.email_await_validation\
             or self.is_expired():
-            raise False
+            return False
         return True
 
     def consume(self):

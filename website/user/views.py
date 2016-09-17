@@ -38,5 +38,5 @@ class ValidateTokenEmailView(TemplateView):
                 raise Exception('invalid token')
             token.consume()
             return redirect('main:index')
-        except Exception:
-            return 'hehehe'
+        except Exception as e:
+            raise e
