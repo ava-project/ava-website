@@ -12,6 +12,12 @@ services:
             - DJANGO_SETTINGS_MODULE=core.settings.dev
         depends_on:
             - db
+            - mail
+
+    mail:
+        image: schickling/mailcatcher
+        ports:
+            - 1080:1080
 
     db:
         image: postgres
