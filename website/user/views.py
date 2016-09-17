@@ -29,21 +29,14 @@ if it's not expired, correspond to the correct user and
 if it's not consumed yet, then the user account will be
 validate after that
 """
-class ValidateTokenEmail(TemplateView):
+class ValidateTokenEmailView(TemplateView):
 
     def get(self, request, **kwargs):
         try:
-            # pull from url
-            email = request.GET['email']
-            value_token = request.GET['token']
-            # test if valid
-            token = EmailValidationToken.objects.get(token=value_token)
-            if token.consumed or email == token.user.email or token.is_expired():
+            token = EmailValidationToken.objects.get(token=request.GET['token'])
+            if not token.is_valid(request.GET['email']):
                 raise Exception('invalid token')
-            # update everything
-            token.user.profile.validated = True
-            token.user.profile.save()
-            token.consumed = True
-            token.save()
+            token.consume()
+            return redirect('main:index')
         except Exception:
             return 'hehehe'

@@ -11,6 +11,7 @@ from model_utils.models import TimeStampedModel
 class Profile(TimeStampedModel, models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     validated = models.BooleanField(default=False)
+    email_await_validation = models.EmailField(blank=True)
 
 
 class EmailValidationToken(TimeStampedModel, models.Model):
@@ -26,6 +27,20 @@ class EmailValidationToken(TimeStampedModel, models.Model):
             return True
         return False
 
+    def is_valid(self, email):
+        if self.consumed\
+            or email == self.user.profile.email_await_validation\
+            or self.is_expired():
+            raise False
+        return True
+
+    def consume(self):
+        self.user.profile.validated = True
+        self.user.profile.save()
+        self.user.email = self.user.profile.email_await_validation
+        self.consumed = True
+        self.save()
+
     def save(self, *args, **kwargs):
         self.token = crypto.get_random_string(length=50)
         self.expire = timezone.now() + datetime.timedelta(days=2)
@@ -38,4 +53,6 @@ Signal to create a profile model when a User is created
 @receiver(post_save, sender=User)
 def after_user_save(sender, **kwargs):
     if kwargs['created']:
-        Profile(user=kwargs['instance']).save()
+        user = kwargs['instance']
+        profile = Profile(user=user, email_await_validation=user.email)
+        profile.save()
