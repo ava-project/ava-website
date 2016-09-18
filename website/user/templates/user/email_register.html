@@ -1,0 +1,13 @@
+{% extends "layout/email.html" %}
+
+{% block subject %}
+Activate your AVA account
+{% endblock %}
+
+{% block body %}
+Go to your browser and copy paste this link : http://localhost:8000/user/validate_email?email={{ email }}&token={{ token }}
+{% endblock %}
+
+{% block html %}
+<a href="http://localhost:8000/user/validate_email?email={{ email }}&token={{ token }}">Click here</a>
+{% endblock %}
