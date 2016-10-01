@@ -1,3 +1,4 @@
+from django.core import mail
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 
@@ -19,6 +20,7 @@ class RegisterTest(TestCase):
         self.assertTrue(form.is_valid())
         response = self.client.post('/user/register', form_data)
         self.assertEqual(response.status_code, 302)
+        self.assertEqual(len(mail.outbox), 1)
 
     def test_empty_username(self):
         form_data = {
