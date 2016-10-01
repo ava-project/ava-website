@@ -18,7 +18,7 @@ creates the user, the validation token and it
 sends the email, then redirect to the homepage
 """
 class RegisterView(FormView):
-    template_name = "user/register.html"
+    template_name = "generic/form.html"
     form_class = forms.RegisterForm
 
     def send_validation_email(self, user, token):
@@ -38,6 +38,7 @@ class RegisterView(FormView):
         token.save()
         self.send_validation_email(user, token)
         return redirect('main:index')
+
 
 
 """
