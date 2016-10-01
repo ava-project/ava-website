@@ -1,13 +1,9 @@
-<!Doctype html>
-<html>
-    <head>
-        <title>AVA project</title>
-    </head>
-    <body>
-        <form method="post" action="">
+{% extends "layout/main.html" %}
+
+{% block content %}
+<form method="post" action="">
             {% csrf_token %}
             {{ form.as_p }}
             <input type="submit" />
-        </form>
-    </body>
-</html>
+</form>
+{% endblock %}

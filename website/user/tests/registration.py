@@ -10,6 +10,10 @@ class RegisterTest(TestCase):
         User.objects.create_user('username', 'email@email.fr', 'password')
         self.client = Client()
 
+    def test_200_form(self):
+        response = self.client.get('/user/register')
+        self.assertEqual(response.status_code, 200)
+
     def test_correct_registration(self):
         form_data = {
             'username': 'correct',
