@@ -1,4 +1,5 @@
 from django.contrib import auth
+from django.contrib.auth import views as auth_views
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.http import HttpResponseBadRequest
@@ -18,7 +19,6 @@ by the validators on the model layer. Then it
 creates the user, the validation token and it
 sends the email, then redirect to the homepage
 """
-@transaction.atomic
 class RegisterView(FormView):
     template_name = "generic/form.html"
     form_class = forms.RegisterForm
@@ -29,6 +29,7 @@ class RegisterView(FormView):
             user.email,
             token=token)
 
+    @transaction.atomic
     def form_valid(self, form):
         data = form.cleaned_data
         user = User.objects.create_user(
