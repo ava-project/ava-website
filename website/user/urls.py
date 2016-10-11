@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from django.contrib.auth import views as django_auth_views
+from django.contrib.auth.decorators import login_required
 from . import views
 
 urlpatterns = [
@@ -16,10 +17,10 @@ urlpatterns = [
         django_auth_views.logout,
         name='logout'),
     url(r'^profile/?$',
-        views.ProfileView.as_view(),
+        login_required(views.ProfileView.as_view()),
         name='profile'),
     url(r'^resend_validation_email/?$',
-        views.ResendValidationEmail.as_view(),
+        login_required(views.ResendValidationEmail.as_view()),
         name='resend-validation-email'),
     url(r'^validate_email/?$',
         views.ValidateTokenEmailView.as_view(),
