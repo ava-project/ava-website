@@ -1,0 +1,11 @@
+<nav>
+    <a href="{% url 'main:index' %}">AVA</a>
+    |
+    {% if user.is_authenticated %}
+        {{ user.username }}
+        <a href="{% url 'user:logout' %}">Sign out</a>
+    {% else %}
+        <a href="{% url 'user:register' %}">Create account</a>
+        <a href="{% url 'user:login' %}">Sign-in</a>
+    {% endif %}
+</nav>
