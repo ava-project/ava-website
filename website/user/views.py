@@ -5,7 +5,7 @@ from django.db import transaction
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.views.generic.edit import FormView
-from django.views.generic import TemplateView
+from django.views.generic import DetailView, TemplateView
 
 from core.utils import send_email
 
@@ -42,6 +42,13 @@ class RegisterView(FormView):
         self.send_validation_email(user, token)
         return redirect('main:index')
 
+
+"""
+This endpoint allows one to see his profile and
+edit his parameters.
+"""
+class ProfileView(TemplateView):
+    template_name = "user/profile.html"
 
 
 """
