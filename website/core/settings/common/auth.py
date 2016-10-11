@@ -1,4 +1,5 @@
 LOGIN_REDIRECT_URL = '/user/profile'
+LOGOUT_REDIRECT_URL = '/'
 
 AUTHENTICATION_BACKENDS = (
     'user.backend.AuthenticationBackend',
