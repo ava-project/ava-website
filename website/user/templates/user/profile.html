@@ -1,5 +1,10 @@
 {% extends "layout/main.html" %}
 
 {% block content %}
-    <h1>Welcome {{ user.username }} </h1>
+    {% if user.profile.validated %}
+        <h1>Welcome {{ user.username }} </h1>
+    {% else %}
+        <p>Please activate your account with the email.</p>
+        <a href="{% url 'user:resend-validation-email' %}">Send another email</a>
+    {% endif %}
 {% endblock %}

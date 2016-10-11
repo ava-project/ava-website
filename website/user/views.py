@@ -5,11 +5,9 @@ from django.db import transaction
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.views.generic.edit import FormView
-from django.views.generic import DetailView, TemplateView
+from django.views.generic import DetailView, RedirectView, TemplateView, View
 
-from core.utils import send_email
-
-from . import forms
+from . import forms, utils
 from .models import EmailValidationToken
 
 """
@@ -23,12 +21,6 @@ class RegisterView(FormView):
     template_name = "user/register.html"
     form_class = forms.RegisterForm
 
-    def send_validation_email(self, user, token):
-        send_email(
-            'email/user_register.html',
-            user.email,
-            token=token)
-
     @transaction.atomic
     def form_valid(self, form):
         data = form.cleaned_data
@@ -37,9 +29,7 @@ class RegisterView(FormView):
             data['email'],
             data['password']
         )
-        token = EmailValidationToken(user=user)
-        token.save()
-        self.send_validation_email(user, token)
+        utils.create_and_send_validation_email(user)
         return redirect('main:index')
 
 
@@ -68,3 +58,16 @@ class ValidateTokenEmailView(TemplateView):
             return redirect('main:index')
         except Exception as e:
             return HttpResponseBadRequest('Something went wrong with your token, please try again')
+
+
+"""
+This endpoint send another email to validate the account
+of one person not validated
+"""
+class ResendValidationEmail(View):
+
+    def get(self, request, **kwargs):
+        user = request.user
+        if not user.profile.validated:
+            utils.create_and_send_validation_email(user)
+        return redirect('user:profile')
