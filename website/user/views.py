@@ -1,10 +1,11 @@
 from django.contrib import auth
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse_lazy
 from django.db import transaction
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, UpdateView
 from django.views.generic import DetailView, RedirectView, TemplateView, View
 
 from . import forms, utils
@@ -42,6 +43,19 @@ class ProfileView(TemplateView):
 
 
 """
+This endpoint allows one to see his profile and
+edit his parameters.
+"""
+class ProfileEditView(UpdateView):
+    template_name = "user/edit-profile.html"
+    form_class = forms.EditProfileForm
+    success_url = reverse_lazy('user:profile')
+
+    def get_object(self):
+        return self.request.user
+
+
+"""
 This endpoint tests if the token is in the database and
 if it's not expired, correspond to the correct user and
 if it's not consumed yet, then the user account will be
@@ -56,7 +70,7 @@ class ValidateTokenEmailView(TemplateView):
                 raise Exception('invalid token')
             token.consume()
             return redirect('main:index')
-        except Exception as e:
+        except:
             return HttpResponseBadRequest('Something went wrong with your token, please try again')
 
 

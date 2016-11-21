@@ -2,7 +2,8 @@
 
 {% block content %}
     {% if user.profile.validated %}
-        <h1>Welcome {{ user.username }} </h1>
+        <h4>Welcome {{ user.username }}</h4>
+        <a href="{% url 'user:edit-profile' %}">Edit my profile</a>
     {% else %}
         <p>Please activate your account with the email.</p>
         <a href="{% url 'user:resend-validation-email' %}">Send another email</a>
