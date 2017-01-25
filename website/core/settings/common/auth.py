@@ -1,9 +1,10 @@
 LOGIN_REDIRECT_URL = '/user/profile'
 LOGOUT_REDIRECT_URL = '/'
 
-AUTHENTICATION_BACKENDS = (
+AUTHENTICATION_BACKENDS = [
     'user.backend.AuthenticationBackend',
-)
+    'user.backend.EmailBackend',
+]
 
 AUTH_PASSWORD_VALIDATORS = [
     {
