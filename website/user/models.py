@@ -7,6 +7,7 @@ from django.dispatch import receiver
 from django.utils import timezone, crypto
 from model_utils.models import TimeStampedModel
 
+from core.behaviors import Expirationable
 
 class Profile(TimeStampedModel, models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -14,18 +15,10 @@ class Profile(TimeStampedModel, models.Model):
     email_await_validation = models.EmailField(blank=True)
 
 
-class EmailValidationToken(TimeStampedModel, models.Model):
-    NB_DAY_EXPIRE = 2
-
+class EmailValidationToken(Expirationable, TimeStampedModel, models.Model):
     token = models.CharField(max_length=100, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     consumed = models.BooleanField(default=False)
-
-    def is_expired(self):
-        limit = self.created + datetime.timedelta(days=self.NB_DAY_EXPIRE)
-        if limit < timezone.now():
-            return True
-        return False
 
     def is_valid(self, email):
         if self.consumed\
