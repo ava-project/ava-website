@@ -1,12 +1,13 @@
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
+from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
-from django.shortcuts import render
+from .models import Device
 
-# Create your views here.
+
 class LoginView(View):
 
     @method_decorator(csrf_exempt)
@@ -18,8 +19,13 @@ class LoginView(View):
         password = request.POST['password']
         user = authenticate(username=username, password=password)
         if user is not None:
-            login(request, user)
-            return JsonResponse({'data': 'Success !'})
-            # Redirect to a success page.
+            device = self.create_device(user)
+            return JsonResponse({'data': device.token})
         else:
             return JsonResponse({'error': 'Wrong credentials'})
+
+    def create_device(self, user):
+        device = Device(user=user)
+        device.save()
+        print(device.token)
+        return device
