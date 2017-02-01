@@ -1,10 +1,7 @@
 FROM python:latest
 
-RUN apt-get update ; apt-get upgrade -y
-RUN apt-get install libmysqlclient-dev
-
-# RUN apt-get install python-docutils -y
-# RUN apt-get install rst2pdf -y
+RUN apt-get update -y ; apt-get upgrade -y
+RUN apt-get install netcat -y
 
 RUN mkdir /app
 WORKDIR /app
