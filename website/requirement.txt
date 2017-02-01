@@ -4,3 +4,4 @@ pytz
 django-model-utils
 mock
 psycopg2
+docutils

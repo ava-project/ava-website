@@ -14,14 +14,15 @@ from django.views.generic import DetailView, RedirectView, TemplateView, View
 from . import forms, utils
 from .models import EmailValidationToken, Device
 
-"""
-This endpoint is a generic form view for the user
-registration. The validation of the form is done
-by the validators on the model layer. Then it
-creates the user, the validation token and it
-sends the email, then redirect to the homepage
-"""
 class RegisterView(FormView):
+    """
+    This endpoint is a generic form view for the user
+    registration. The validation of the form is done
+    by the validators on the model layer. Then it
+    creates the user, the validation token and it
+    sends the email, then redirect to the homepage
+    """
+
     template_name = "user/register.html"
     form_class = forms.RegisterForm
 
@@ -37,11 +38,11 @@ class RegisterView(FormView):
         return redirect('main:index')
 
 
-"""
-This endpoint allows one to see his profile and
-edit his parameters.
-"""
 class ProfileView(TemplateView):
+    """
+    This endpoint allows one to see his profile and
+    edit his parameters.
+    """
     template_name = "user/profile.html"
 
 
@@ -58,13 +59,13 @@ class ProfileEditView(UpdateView):
         return self.request.user
 
 
-"""
-This endpoint tests if the token is in the database and
-if it's not expired, correspond to the correct user and
-if it's not consumed yet, then the user account will be
-validate after that
-"""
 class ValidateTokenEmailView(TemplateView):
+    """
+    This endpoint tests if the token is in the database and
+    if it's not expired, correspond to the correct user and
+    if it's not consumed yet, then the user account will be
+    validate after that
+    """
 
     def get(self, request, **kwargs):
         try:
@@ -77,11 +78,11 @@ class ValidateTokenEmailView(TemplateView):
             return HttpResponseBadRequest('Something went wrong with your token, please try again')
 
 
-"""
-This endpoint send another email to validate the account
-of one person not validated
-"""
 class ResendValidationEmail(View):
+    """
+    This endpoint sends another email to validate the account
+    of one person who didn't validated
+    """
 
     def get(self, request, **kwargs):
         user = request.user
@@ -91,6 +92,11 @@ class ResendValidationEmail(View):
 
 
 class RemoteLoginView(View):
+    """
+    This Endpoint authenticate a user, and create a unique token.
+    A client can use Http Basic Auth with email as username and this token as password to sign his requests
+    This token expires after two weeks.
+    """
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -108,6 +114,9 @@ class RemoteLoginView(View):
 
 
 class RemoteInfoUserView(View):
+    """
+    This endpoint returns a json object with user information
+    """
 
     def get(self, request, **kwargs):
         user = request.user
@@ -121,6 +130,9 @@ class RemoteInfoUserView(View):
 
 
 class RemoteLogoutView(View):
+    """
+    This endpoint logout a user by removing all tokens.
+    """
 
     def get(self, request, **kwargs):
         Device.objects.filter(user=request.user).delete()
