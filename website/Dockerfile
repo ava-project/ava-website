@@ -1,13 +1,12 @@
 FROM python:latest
 
-RUN apt-get update -y ; apt-get upgrade -y
-RUN apt-get install netcat -y
-
 RUN mkdir /app
 WORKDIR /app
 
-ADD requirement.txt .
+ADD requirement.txt /app
 RUN pip install -r requirement.txt
+
+ADD . /app
 
 ENV PYTHONUNBUFFERED 1
 

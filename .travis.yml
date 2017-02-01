@@ -8,5 +8,8 @@ install:
   - docker-compose run --rm web python wait-postgre.sh
   - docker-compose run --rm web python manage.py migrate
 
+before_script:
+  - sleep 10
+
 script:
   - docker-compose run --rm web python manage.py test
