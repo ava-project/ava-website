@@ -47,8 +47,11 @@ urlpatterns = [
     # for json api
     url(r'^login.json/?$',
         views.RemoteLoginView.as_view(),
-        name='login'),
+        name='login-json'),
+    url(r'^me.json/?$',
+        remote_login_required(views.RemoteInfoUserView.as_view()),
+        name='me-json'),
     url(r'^logout.json/?$',
         remote_login_required(views.RemoteLogoutView.as_view()),
-        name='logout'),
+        name='logout-json'),
 ]

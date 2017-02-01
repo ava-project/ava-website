@@ -101,14 +101,23 @@ class RemoteLoginView(View):
         password = request.POST.get('password', '')
         user = authenticate(username=username, password=password)
         if user:
-            device = self.create_device(user)
+            device = Device(user=user)
+            device.save()
             return JsonResponse({'data': device.token})
-        return JsonResponse({'error': 'Wrong credentials'})
+        return JsonResponse({'error': 'Wrong credentials'}, status=400)
 
-    def create_device(self, user):
-        device = Device(user=user)
-        device.save()
-        return device
+
+class RemoteInfoUserView(View):
+
+    def get(self, request, **kwargs):
+        user = request.user
+        data = {
+            'email': user.email,
+            'username': user.username,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+        }
+        return JsonResponse(data)
 
 
 class RemoteLogoutView(View):
