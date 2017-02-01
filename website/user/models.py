@@ -4,14 +4,12 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
-from django.utils import timezone, crypto
 from model_utils.models import TimeStampedModel
 
 from core.behaviors import Expirationable
 
+from .utils import generate_token
 
-def generate_token():
-    return crypto.get_random_string(length=50)
 
 class Device(Expirationable, TimeStampedModel, models.Model):
     """
@@ -21,6 +19,7 @@ class Device(Expirationable, TimeStampedModel, models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     token = models.CharField(max_length=50, default=generate_token, unique=True)
+
 
 class Profile(TimeStampedModel, models.Model):
     """
@@ -52,11 +51,6 @@ class EmailValidationToken(Expirationable, TimeStampedModel, models.Model):
         self.user.email = self.user.profile.email_await_validation
         self.consumed = True
         self.save()
-
-    def save(self, *args, **kwargs):
-        self.token = crypto.get_random_string(length=50)
-        self.expire = timezone.now() + datetime.timedelta(days=2)
-        super().save(*args, **kwargs)
 
 
 """
