@@ -1,10 +1,12 @@
 from django.conf.urls import url
 from django.contrib.auth import views as django_auth_views
 from django.contrib.auth.decorators import login_required
+
 from . import views
+from .decorators import remote_login_required
 
 urlpatterns = [
-    # before authentication
+    # changing visitor state
     url(r'^register/?$',
         views.RegisterView.as_view(),
         name='register'),
@@ -17,6 +19,7 @@ urlpatterns = [
     url(r'^logout/?$',
         django_auth_views.logout,
         name='logout'),
+
     # profile
     url(r'^profile/?$',
         login_required(views.ProfileView.as_view()),
@@ -31,6 +34,7 @@ urlpatterns = [
     url(r'^password-reset/done?$',
         django_auth_views.password_reset_done,
         name='reset-password-done'),
+
     # token validation
     url(r'^resend_validation_email/?$',
         login_required(views.ResendValidationEmail.as_view()),
@@ -38,4 +42,13 @@ urlpatterns = [
     url(r'^validate_email/?$',
         views.ValidateTokenEmailView.as_view(),
         name='validate-email'),
+
+
+    # for json api
+    url(r'^login.json/?$',
+        views.RemoteLoginView.as_view(),
+        name='login'),
+    url(r'^logout.json/?$',
+        remote_login_required(views.RemoteLogoutView.as_view()),
+        name='logout'),
 ]

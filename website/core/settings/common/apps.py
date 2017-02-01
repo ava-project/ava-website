@@ -9,6 +9,5 @@ INSTALLED_APPS = [
     'mail_templated',
 
     'main',
-    'remote',
     'user',
 ]

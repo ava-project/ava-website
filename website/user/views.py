@@ -1,15 +1,18 @@
 from django.contrib import auth
-from django.contrib.auth import views as auth_views
+from django.contrib.auth import authenticate, login, logout, views as auth_views
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse_lazy
 from django.db import transaction
-from django.http import HttpResponseBadRequest
-from django.shortcuts import render, redirect
+from django.http import HttpResponseBadRequest, JsonResponse
+from django.shortcuts import redirect
+from django.utils.decorators import method_decorator
+from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.edit import FormView, UpdateView
 from django.views.generic import DetailView, RedirectView, TemplateView, View
 
 from . import forms, utils
-from .models import EmailValidationToken
+from .models import EmailValidationToken, Device
 
 """
 This endpoint is a generic form view for the user
@@ -85,3 +88,32 @@ class ResendValidationEmail(View):
         if not user.profile.validated:
             utils.create_and_send_validation_email(user)
         return redirect('user:profile')
+
+
+class RemoteLoginView(View):
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, **kwargs):
+        username = request.POST.get('email', '')
+        password = request.POST.get('password', '')
+        user = authenticate(username=username, password=password)
+        if user:
+            device = self.create_device(user)
+            return JsonResponse({'data': device.token})
+        return JsonResponse({'error': 'Wrong credentials'})
+
+    def create_device(self, user):
+        device = Device(user=user)
+        device.save()
+        return device
+
+
+class RemoteLogoutView(View):
+
+    def get(self, request, **kwargs):
+        Device.objects.filter(user=request.user).delete()
+        logout(request)
+        return JsonResponse({'data': 'You have been logged out'})
