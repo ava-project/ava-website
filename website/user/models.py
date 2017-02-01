@@ -4,28 +4,39 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
-from django.utils import timezone, crypto
 from model_utils.models import TimeStampedModel
+
+from core.behaviors import Expirationable
+
+from .utils import generate_token
+
+
+class Device(Expirationable, TimeStampedModel, models.Model):
+    """
+    Represent a Daemon using the JSON API
+    """
+    NB_DAY_EXPIRE = 14 # expire after 2 weeks
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    token = models.CharField(max_length=50, default=generate_token, unique=True)
 
 
 class Profile(TimeStampedModel, models.Model):
+    """
+    Extend the User model
+    """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     validated = models.BooleanField(default=False)
     email_await_validation = models.EmailField(blank=True)
 
 
-class EmailValidationToken(TimeStampedModel, models.Model):
-    NB_DAY_EXPIRE = 2
-
-    token = models.CharField(max_length=100, unique=True)
+class EmailValidationToken(Expirationable, TimeStampedModel, models.Model):
+    """
+    Store the tokens for validating account
+    """
+    token = models.CharField(max_length=50, default=generate_token, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     consumed = models.BooleanField(default=False)
-
-    def is_expired(self):
-        limit = self.created + datetime.timedelta(days=self.NB_DAY_EXPIRE)
-        if limit < timezone.now():
-            return True
-        return False
 
     def is_valid(self, email):
         if self.consumed\
@@ -40,11 +51,6 @@ class EmailValidationToken(TimeStampedModel, models.Model):
         self.user.email = self.user.profile.email_await_validation
         self.consumed = True
         self.save()
-
-    def save(self, *args, **kwargs):
-        self.token = crypto.get_random_string(length=50)
-        self.expire = timezone.now() + datetime.timedelta(days=2)
-        super().save(*args, **kwargs)
 
 
 """
