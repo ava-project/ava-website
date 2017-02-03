@@ -8,8 +8,8 @@ class BasicAuthRemote(object):
 
     def get_user_token(self, email, token):
         try:
-            device = Device.objects.get(token=token).select_related('user')
-            if device.user.email is not email:
+            device = Device.objects.get(token=token)
+            if device.user.email != email:
                 return None
             return user
         except:
