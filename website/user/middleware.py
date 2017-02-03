@@ -11,8 +11,9 @@ class BasicAuthRemote(object):
             device = Device.objects.get(token=token)
             if device.user.email != email:
                 return None
-            return user
-        except:
+            return device.user
+        except Exception as e:
+            print(e)
             return None
 
     def __call__(self, request):
