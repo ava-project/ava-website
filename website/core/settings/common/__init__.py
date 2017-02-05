@@ -2,7 +2,7 @@ import os
 
 env = os.environ
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['163.5.84.224', 'localhost', '127.0.0.1']
 BASE_DIR = '/app'
 DEBUG = True
 SECRET_KEY = env.get('SECRET_KEY', 'weird punchy keyboard')
