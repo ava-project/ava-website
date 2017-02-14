@@ -1,7 +1,8 @@
 # ava-website
 The repository of the AVA website, Django here
 
-[![Requirements Status](https://requires.io/github/ava-project/ava-website/requirements.svg?branch=develop)](https://requires.io/github/ava-project/ava-website/requirements/?branch=develop) [![Build Status](https://travis-ci.org/ava-project/ava-website.svg?branch=develop)](https://travis-ci.org/ava-project/ava-website)
+[![Requirements Status](https://requires.io/github/ava-project/ava-website/requirements.svg?branch=develop)](https://requires.io/github/ava-project/ava-website/requirements/?branch=develop) [![Build Status](https://travis-ci.org/ava-project/ava-website.svg?branch=develop)](https://travis-ci.org/ava-project/ava-website) [![Code Health](https://landscape.io/github/ava-project/ava-website/develop/landscape.svg?style=flat)](https://landscape.io/github/ava-project/ava-website/develop)
+
 
 ## Build
 
