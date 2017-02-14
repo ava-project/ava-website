@@ -7,6 +7,7 @@ from django.dispatch import receiver
 from model_utils.models import TimeStampedModel
 
 from core.behaviors import Expirationable
+from core.utils import send_email
 
 from .utils import generate_token
 
@@ -52,6 +53,14 @@ class EmailValidationToken(Expirationable, TimeStampedModel, models.Model):
         self.consumed = True
         self.save()
 
+    @staticmethod
+    def create_and_send_validation_email(user):
+        token = EmailValidationToken(user=user)
+        token.save()
+        send_email(
+            'email/user_register.html',
+            user.email,
+            token=token)
 
 """
 Signal to create a profile model when a User is created

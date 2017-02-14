@@ -1,7 +1,7 @@
 import datetime
 
 from django.utils import timezone
-from model_utils.models import TimeStampedModel
+
 
 class Expirationable():
     NB_DAY_EXPIRE = 2

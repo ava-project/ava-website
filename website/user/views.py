@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.edit import FormView, UpdateView
 from django.views.generic import DetailView, RedirectView, TemplateView, View
 
-from . import forms, utils
+from . import forms
 from .models import EmailValidationToken, Device
 
 class RegisterView(FormView):
@@ -34,7 +34,7 @@ class RegisterView(FormView):
             data['email'],
             data['password']
         )
-        utils.create_and_send_validation_email(user)
+        EmailValidationToken.create_and_send_validation_email(user)
         return redirect('main:index')
 
 
@@ -87,7 +87,7 @@ class ResendValidationEmail(View):
     def get(self, request, **kwargs):
         user = request.user
         if not user.profile.validated:
-            utils.create_and_send_validation_email(user)
+            EmailValidationToken.create_and_send_validation_email(user)
         return redirect('user:profile')
 
 
