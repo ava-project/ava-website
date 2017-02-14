@@ -1,10 +1,10 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend
 
-"""
-Join the request with the profile
-"""
 class AuthenticationBackend(ModelBackend):
+    """
+    Join the request with the profile
+    """
 
     def get_user(self, user_id):
         UserModel = get_user_model()
@@ -17,6 +17,9 @@ class AuthenticationBackend(ModelBackend):
 
 
 class EmailBackend(AuthenticationBackend):
+    """
+    Login with the email address and normal password
+    """
 
     def authenticate(self, username=None, password=None, **kwargs):
         UserModel = get_user_model()
