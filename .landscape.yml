@@ -1,0 +1,12 @@
+doc-warnings: true
+test-warnings: false
+strictness: veryhigh
+uses:
+  - django
+autodetect: true
+requirements:
+  - website/requirement.txt
+ignore-paths:
+  - website/core/settings
+python-targets:
+  - 3

@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+  web:
+    extends:
+      file: docker-compose.common.yml
+      service: web
+    environment:
+      - DJANGO_SETTINGS_MODULE=core.settings.prod
+    volumes:
+      - ./website:/app
+    depends_on:
+      - db
+    command: ./prod.sh
+    restart: always
+
+  db:
+    extends:
+      file: docker-compose.common.yml
+      service: db
+    restart: always
+
+volumes:
+  db-data:
+    driver: local

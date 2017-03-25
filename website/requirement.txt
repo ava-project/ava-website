@@ -1,0 +1,8 @@
+Django==1.10.5
+django-mail-templated==2.6.5
+django-model-utils==2.6.1
+docutils==0.13.1
+gunicorn==19.6.0
+mock==2.0.0
+psycopg2==2.6.2
+pytz==2016.10
