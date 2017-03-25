@@ -5,23 +5,20 @@ services:
     extends:
       file: docker-compose.common.yml
       service: web
+    environment:
+      - DJANGO_SETTINGS_MODULE=core.settings.prod
     volumes:
       - ./website:/app
-    environment:
-      - DJANGO_SETTINGS_MODULE=core.settings.dev
     depends_on:
       - db
-      - mail
-
-  mail:
-    image: schickling/mailcatcher
-    ports:
-      - 1080:1080
+    command: ./prod.sh
+    restart: always
 
   db:
     extends:
       file: docker-compose.common.yml
       service: db
+    restart: always
 
 volumes:
   db-data:

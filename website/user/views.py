@@ -14,6 +14,7 @@ from django.views.generic import DetailView, RedirectView, TemplateView, View
 from . import forms
 from .models import EmailValidationToken, Device
 
+
 class RegisterView(FormView):
     """
     This endpoint is a generic form view for the user

@@ -15,4 +15,15 @@ test:
 	${MANAGE} test
 
 run:
-	${COMMAND} up
+	${COMMAND} up web
+
+container-shell:
+	${COMMAND} run --rm web bash
+
+build:
+	${COMMAND} build
+
+default: build run
+
+bash:
+	${COMMAND} run --rm web bash

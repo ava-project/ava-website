@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+
+  web:
+    build: ./website
+    ports:
+      - 8000:8000
+    environment:
+      - DJANGO_SETTINGS_MODULE=core.settings.dev
+
+  db:
+    image: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data/
+
+  mail:
+    image: schickling/mailcatcher
+    ports:
+      - 1080:1080
