@@ -27,3 +27,7 @@ default: build run
 
 bash:
 	${COMMAND} run --rm web bash
+
+deploy: build
+	${COMMAND} run --rm collectstatic
+	${COMMAND} restart
