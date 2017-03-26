@@ -7,7 +7,7 @@ BASE_DIR = '/app'
 DEBUG = True
 SECRET_KEY = env.get('SECRET_KEY', 'weird punchy keyboard')
 STATIC_URL = '/static/'
-STATIC_ROOT = '/app' + STATIC_URL
+STATIC_ROOT = '/app/public'
 ROOT_URLCONF = 'core.urls'
 WSGI_APPLICATION = 'core.wsgi.application'
 

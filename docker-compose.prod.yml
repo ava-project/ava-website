@@ -27,7 +27,7 @@ services:
     environment:
       - DJANGO_SETTINGS_MODULE=core.settings.prod
     volumes:
-      - ./static:/app/static
+      - ./public:/app/public
     command: python3 manage.py collectstatic --noinput
 
 volumes:
