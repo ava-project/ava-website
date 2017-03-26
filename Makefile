@@ -30,4 +30,5 @@ bash:
 
 deploy: build
 	${COMMAND} run --rm collectstatic
+	${COMMAND} run --rm migrate
 	${COMMAND} restart
