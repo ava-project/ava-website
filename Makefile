@@ -12,7 +12,7 @@ django:
 	${MANAGE} $(filter-out $@, $(MAKECMDGOALS))
 
 test:
-	${MANAGE} test
+	${MANAGE} test --keep
 
 run:
 	${COMMAND} up web
@@ -30,4 +30,5 @@ bash:
 
 deploy: build
 	${COMMAND} run --rm collectstatic
+	${MANAGE} run --rm migrate
 	${COMMAND} restart
