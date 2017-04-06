@@ -10,4 +10,4 @@ ADD . /app
 
 ENV PYTHONUNBUFFERED 1
 
-CMD ./start.sh
+CMD ./dev.sh

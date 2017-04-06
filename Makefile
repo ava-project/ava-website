@@ -31,4 +31,4 @@ bash:
 deploy: build
 	${MANAGE} collectstatic --noinput
 	${MANAGE} migrate
-	${COMMAND} restart
+	${COMMAND} up -d web
