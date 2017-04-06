@@ -29,6 +29,6 @@ bash:
 	${COMMAND} run --rm web bash
 
 deploy: build
-	${COMMAND} run --rm collectstatic
-	${MANAGE} run --rm migrate
+	${MANAGE} collectstatic --noinput
+	${MANAGE} migrate
 	${COMMAND} restart
