@@ -35,7 +35,7 @@ class RegisterView(FormView):
             data['email'],
             data['password']
         )
-        EmailValidationToken.create_and_send_validation_email(user)
+        EmailValidationToken.create_and_send_validation_email(user, self.request)
         return redirect('main:index')
 
 
@@ -88,7 +88,7 @@ class ResendValidationEmail(View):
     def get(self, request, **kwargs):
         user = request.user
         if not user.profile.validated:
-            EmailValidationToken.create_and_send_validation_email(user)
+            EmailValidationToken.create_and_send_validation_email(user, request)
         return redirect('user:profile')
 
 

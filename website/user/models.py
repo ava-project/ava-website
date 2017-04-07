@@ -1,9 +1,11 @@
 import datetime
+from urllib.parse import quote
 
-from django.db import models
+from django.db import models, transaction
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.dispatch import receiver
+from django.urls import reverse
 from model_utils.models import TimeStampedModel
 
 from core.behaviors import Expirationable
@@ -39,6 +41,11 @@ class EmailValidationToken(Expirationable, TimeStampedModel, models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     consumed = models.BooleanField(default=False)
 
+    def generate_validation_url(self, request):
+        querystrings = "?email={}&token={}".format(quote(self.user.email), self.token)
+        url = reverse('user:validate-email') + querystrings
+        return request.build_absolute_uri(url)
+
     def is_valid(self, email):
         if self.consumed\
             or email != self.user.profile.email_await_validation\
@@ -46,6 +53,7 @@ class EmailValidationToken(Expirationable, TimeStampedModel, models.Model):
             return False
         return True
 
+    @transaction.atomic
     def consume(self):
         self.user.profile.validated = True
         self.user.profile.save()
@@ -54,13 +62,13 @@ class EmailValidationToken(Expirationable, TimeStampedModel, models.Model):
         self.save()
 
     @staticmethod
-    def create_and_send_validation_email(user):
+    def create_and_send_validation_email(user, request):
         token = EmailValidationToken(user=user)
         token.save()
         send_email(
             'email/user_register.html',
             user.email,
-            token=token)
+            url_validation=token.generate_validation_url(request))
 
 """
 Signal to create a profile model when a User is created
