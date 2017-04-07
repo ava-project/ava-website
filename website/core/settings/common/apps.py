@@ -1,4 +1,3 @@
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.admindocs',
@@ -8,7 +7,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mail_templated',
-
 
     'main',
     'user',
