@@ -4,6 +4,6 @@ def send_email(template, to, **kwargs):
     send_mail(
         template,
         kwargs,
-        'contact@ava.com',
+        'contact@ava-project.com',
         [to]
     )
