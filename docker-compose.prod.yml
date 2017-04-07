@@ -5,6 +5,8 @@ services:
     extends:
       file: docker-compose.common.yml
       service: web
+    env_file:
+      - config.env
     environment:
       - DJANGO_SETTINGS_MODULE=core.settings.prod
     volumes:
