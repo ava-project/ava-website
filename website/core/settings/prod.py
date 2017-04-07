@@ -11,3 +11,5 @@ EMAIL_PORT = int(env.get('EMAIL_PORT', 0))
 EMAIL_HOST_USER = env.get('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = env.get('EMAIL_HOST_PASSWORD', '')
 EMAIL_USE_TLS = ast.literal_eval(env.get('EMAIL_USE_TLS', True))
+
+BASE_URL = 'https://www.ava-project.com/'
