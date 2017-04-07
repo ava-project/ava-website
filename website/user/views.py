@@ -57,6 +57,7 @@ class ProfileEditView(UpdateView):
     success_url = reverse_lazy('user:profile')
 
     def get_object(self):
+        raise Exception('Random error')
         return self.request.user
 
 
