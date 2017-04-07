@@ -5,9 +5,9 @@ Activate your AVA account
 {% endblock %}
 
 {% block body %}
-Go to your browser and copy paste this link : {{ BASE_URL }}user/validate_email?email={{ email }}&token={{ token }}
+Go to your browser and copy paste this link : {{ url_validation }}
 {% endblock %}
 
 {% block html %}
-<a href="{{ BASE_URL }}user/validate_email?email={{ token.user.email }}&token={{ token.token }}">Click here</a>
+<a href="{{ url_validation }}">Click here</a>
 {% endblock %}
