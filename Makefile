@@ -12,7 +12,7 @@ django:
 	${MANAGE} $(filter-out $@, $(MAKECMDGOALS))
 
 test:
-	${MANAGE} test --keep
+	${MANAGE} test --keep --settings=core.settings.test
 
 run:
 	${COMMAND} up web
