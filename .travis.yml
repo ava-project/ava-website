@@ -1,10 +1,22 @@
 services:
   - docker
 
+cache:
+  directories:
+  - $CACHE_DIR
+
 env:
-  - COMPOSE_FILE=docker-compose.test.yml
+  global:
+    - COMPOSE_FILE=docker-compose.test.yml
+    - CACHE_DIR=$HOME/.cache/docker
+    - CACHE_FILE_PYTHON=$CACHE_DIR/python.tar.gz
+
+before_install:
+  - if [ -f ${CACHE_FILE_PYTHON} ]; then gunzip -c ${CACHE_FILE_PYTHON} | docker load; fi
 
 install:
+  - mkdir -p $CACHE_DIR
+  - if [ ! -f ${CACHE_FILE_PYTHON} ]; then docker save python:3.6.1 | gzip > ${CACHE_FILE_PYTHON}; fi
   - make build
 
 script:
