@@ -2,4 +2,4 @@ Django==1.11
 django-mail-templated==2.6.5
 django-model-utils==2.6.1
 mock==2.0.0
-pytz==2016.10
+pytz==2017.2
