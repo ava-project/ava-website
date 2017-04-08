@@ -1,5 +1,6 @@
 """
-Django view of the user app, list of classes:
+Django view of the user app.
+List of classes:
 - RegisterView
 - ProfileView
 - ProfileEditView
@@ -10,7 +11,7 @@ Django view of the user app, list of classes:
 - RemoteLogoutView
 """
 from django.contrib import auth
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, logout
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.http import HttpResponseBadRequest, JsonResponse
@@ -55,6 +56,7 @@ class ProfileView(TemplateView):
     """
     This endpoint allows one to see his profile.
     """
+
     template_name = "user/profile.html"
 
 
@@ -62,15 +64,14 @@ class ProfileEditView(UpdateView):
     """
     This endpoint allows user to edit his profile.
     """
+
     template_name = "user/edit-profile.html"
     form_class = forms.EditProfileForm
     success_url = reverse_lazy('user:profile')
 
     def get_object(self):
-        """
-        Return the current user.
-        """
-        # raise Exception('Random error')
+        """Return the current user."""
+        raise Exception('Random error')
         return self.request.user
 
 
@@ -81,6 +82,8 @@ class ValidateTokenEmailView(View):
 
     def get(self, request, **kwargs):
         """
+        Validate account from link sent by email.
+
         This endpoint tests if the token is in the database and
         if it's not expired, correspond to the correct user and
         if it's not consumed yet, then the user account will be
@@ -98,6 +101,7 @@ class ValidateTokenEmailView(View):
 
 class ResendValidationEmailView(View):
     """
+
     This endpoint sends another email to validate the account
     of one person who didn't validated
     """

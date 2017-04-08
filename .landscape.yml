@@ -1,6 +1,6 @@
-doc-warnings: true
+doc-warnings: false
 test-warnings: false
-strictness: veryhigh
+strictness: high
 uses:
   - django
 autodetect: true
