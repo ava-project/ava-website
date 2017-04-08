@@ -38,7 +38,7 @@ urlpatterns = [
 
     # token validation
     url(r'^resend_validation_email/?$',
-        login_required(views.ResendValidationEmail.as_view()),
+        login_required(views.ResendValidationEmailView.as_view()),
         name='resend-validation-email'),
     url(r'^validate_email/?$',
         views.ValidateTokenEmailView.as_view(),
