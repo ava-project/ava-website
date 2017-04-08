@@ -1,4 +1,3 @@
-import datetime
 from urllib.parse import quote
 
 from django.db import models, transaction
@@ -70,11 +69,12 @@ class EmailValidationToken(Expirationable, TimeStampedModel, models.Model):
             user.email,
             url_validation=token.generate_validation_url(request))
 
-"""
-Signal to create a profile model when a User is created
-"""
+
 @receiver(post_save, sender=User)
 def after_user_save(sender, **kwargs):
+    """
+    Signal to create a profile model when a User is created
+    """
     if kwargs['created']:
         user = kwargs['instance']
         profile = Profile(user=user, email_await_validation=user.email)

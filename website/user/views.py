@@ -10,7 +10,7 @@ List of classes:
 - RemoteInfoUserView
 - RemoteLogoutView
 """
-from django.contrib import auth
+
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth.models import User
 from django.db import transaction
@@ -18,10 +18,9 @@ from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.edit import FormView, UpdateView
-from django.views.generic import DetailView, TemplateView, View
+from django.views.generic import TemplateView, View
 
 from . import forms
 from .models import EmailValidationToken, Device
@@ -69,7 +68,7 @@ class ProfileEditView(UpdateView):
     form_class = forms.EditProfileForm
     success_url = reverse_lazy('user:profile')
 
-    def get_object(self):
+    def get_object(self, queryset=None):
         """Return the current user."""
         raise Exception('Random error')
         return self.request.user
@@ -92,10 +91,10 @@ class ValidateTokenEmailView(View):
         try:
             token = EmailValidationToken.objects.get(token=request.GET['token'])
             if not token.is_valid(request.GET['email']):
-                raise Exception('invalid token')
+                raise ValueError('invalid token')
             token.consume()
             return redirect('main:index')
-        except:
+        except (EmailValidationToken.DoesNotExist, ValueError):
             return HttpResponseBadRequest('Something went wrong with your token, please try again')
 
 
