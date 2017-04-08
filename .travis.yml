@@ -2,7 +2,7 @@ services:
   - docker
 
 env:
-  - CONFIG_FILE=docker-compose.test.yml
+  - COMPOSE_FILE=docker-compose.test.yml
 
 install:
   - make build
