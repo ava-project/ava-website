@@ -7,7 +7,7 @@ python:
   - "3.6"
 
 install:
-  - pip install -r website/requirement.txt
+  - pip install -r website/base-requirements.txt
 
 script:
   - python website/manage.py test --settings=core.settings.test
