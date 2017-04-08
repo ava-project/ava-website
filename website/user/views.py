@@ -70,7 +70,6 @@ class ProfileEditView(UpdateView):
 
     def get_object(self, queryset=None):
         """Return the current user."""
-        raise Exception('Random error')
         return self.request.user
 
 
