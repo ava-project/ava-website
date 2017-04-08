@@ -3,24 +3,22 @@ services:
 
 cache:
   directories:
-  - $CACHE_DIR
-
+    - /home/travis/docker/
 env:
   global:
     - COMPOSE_FILE=docker-compose.test.yml
-    - CACHE_DIR=$HOME/.cache/docker
-    - CACHE_FILE_PYTHON=$CACHE_DIR/python.tar.gz
+    - DOCKER_CACHE_FILE=/home/travis/docker/cache.tar.gz
 
 before_install:
-  - if [ -f ${CACHE_FILE_PYTHON} ]; then gunzip -c ${CACHE_FILE_PYTHON} | docker load; fi
+  - if [ -f ${DOCKER_CACHE_FILE} ]; then gunzip -c ${DOCKER_CACHE_FILE} | docker load; fi
 
 install:
   - mkdir -p $CACHE_DIR
-  - if [ ! -f ${CACHE_FILE_PYTHON} ]; then docker save python:3.6.1 | gzip > ${CACHE_FILE_PYTHON}; fi
   - make build
 
 script:
   - make test
+  - if [[ ${TRAVIS_BRANCH} == "develop" ]] && [[ ${TRAVIS_PULL_REQUEST} == "false" ]]; then mkdir -p $(dirname ${DOCKER_CACHE_FILE}) ; docker save $(docker history -q ${DOCKER_REPOSITORY}:${TRAVIS_COMMIT} | grep -v '<missing>') | gzip > ${DOCKER_CACHE_FILE}; fi
 
 deploy:
   skip_cleanup: true
