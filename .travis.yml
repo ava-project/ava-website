@@ -1,14 +1,16 @@
-services:
-  - docker
+sudo: false
 
-before_install:
-  - docker-compose up -d db
+cache: pip
+
+language: python
+python:
+  - "3.6"
 
 install:
-  - docker-compose build
+  - pip install -r website/base-requirements.txt
 
 script:
-  - docker-compose run --rm web python manage.py test
+  - python website/manage.py test --settings=core.settings.test
 
 deploy:
   skip_cleanup: true

@@ -6,13 +6,14 @@ endif
 
 COMMAND = docker-compose -f ${CONFIG_FILE}
 
-MANAGE = ${COMMAND} run --rm web python manage.py
+MANAGE = ${COMMAND} run --rm web python -Wall manage.py
 
 django:
 	${MANAGE} $(filter-out $@, $(MAKECMDGOALS))
 
 test:
-	${MANAGE} test --keep --settings=core.settings.test
+	$(eval CONFIG_FILE=docker-compose.test.yml)
+	${MANAGE} test
 
 run:
 	${COMMAND} up web

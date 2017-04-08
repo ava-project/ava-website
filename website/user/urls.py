@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from . import views
 from .decorators import remote_login_required
 
+app_name = 'user'
 urlpatterns = [
     # changing visitor state
     url(r'^register/?$',
@@ -37,7 +38,7 @@ urlpatterns = [
 
     # token validation
     url(r'^resend_validation_email/?$',
-        login_required(views.ResendValidationEmail.as_view()),
+        login_required(views.ResendValidationEmailView.as_view()),
         name='resend-validation-email'),
     url(r'^validate_email/?$',
         views.ValidateTokenEmailView.as_view(),
