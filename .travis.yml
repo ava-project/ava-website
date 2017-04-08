@@ -1,18 +1,13 @@
 sudo: false
-
 language: python
-
-services:
-  - docker
-
-env:
-  - COMPOSE_FILE=docker-compose.test.yml
+python:
+  - "3.6"
 
 install:
-  - make build
+  - pip install -r website/requirement.txt
 
 script:
-  - make test
+  - python manage.py test --settings=core.settings.test
 
 deploy:
   skip_cleanup: true
