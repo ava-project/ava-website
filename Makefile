@@ -12,6 +12,7 @@ django:
 	${MANAGE} $(filter-out $@, $(MAKECMDGOALS))
 
 test:
+	$(eval CONFIG_FILE=docker-compose.test.yml)
 	${MANAGE} test
 
 run:
