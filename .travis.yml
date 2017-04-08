@@ -10,14 +10,14 @@ env:
     - DOCKER_CACHE_FILE=/home/travis/docker/cache.tar.gz
 
 before_install:
-  - if [ -f ${DOCKER_CACHE_FILE} ]; then gunzip -c ${DOCKER_CACHE_FILE} | docker load; fi
+  - if [ -f $DOCKER_CACHE_FILE ]; then gunzip -c $DOCKER_CACHE_FILE | docker load; fi
 
 install:
   - make build
 
 script:
   - make test
-  - if [[ ${TRAVIS_BRANCH} == "develop" ]] && [[ ${TRAVIS_PULL_REQUEST} == "false" ]]; then mkdir -p $(dirname ${DOCKER_CACHE_FILE}) ; docker save $(docker history -q ${DOCKER_REPOSITORY}:${TRAVIS_COMMIT} | grep -v '<missing>') | gzip > ${DOCKER_CACHE_FILE}; fi
+  - if [[ $TRAVIS_BRANCH == "develop" ]] && [[ $TRAVIS_PULL_REQUEST == "false" ]]; then mkdir -p $(dirname $DOCKER_CACHE_FILE) ; docker save $(docker history -q $DOCKER_REPOSITORY:$TRAVIS_COMMIT | grep -v '<missing>') | gzip > $DOCKER_CACHE_FILE; fi
 
 deploy:
   skip_cleanup: true
