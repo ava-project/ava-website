@@ -11,7 +11,8 @@ script:
   - docker-compose run --rm web python manage.py test
 
 deploy:
-  - provider: script
-    script: deploy/on_travis.sh
-    on:
-      branch: master
+  skip_cleanup: true
+  provider: script
+  script: deploy/on_travis.sh
+  on:
+    branch: master
