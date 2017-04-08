@@ -5,5 +5,7 @@ services:
     extends:
       file: docker-compose.common.yml
       service: web
+    volumes:
+      - ./website:/app
     environment:
       - DJANGO_SETTINGS_MODULE=core.settings.test

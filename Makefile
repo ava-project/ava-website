@@ -6,7 +6,7 @@ endif
 
 COMMAND = docker-compose -f ${CONFIG_FILE}
 
-MANAGE = ${COMMAND} run --rm web python manage.py
+MANAGE = ${COMMAND} run --rm web python -Wall manage.py
 
 django:
 	${MANAGE} $(filter-out $@, $(MAKECMDGOALS))

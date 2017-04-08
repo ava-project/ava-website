@@ -1,4 +1,4 @@
-Django==1.10.5
+Django==1.11
 django-mail-templated==2.6.5
 django-model-utils==2.6.1
 mock==2.0.0

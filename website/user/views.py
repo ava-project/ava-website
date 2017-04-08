@@ -1,10 +1,10 @@
 from django.contrib import auth
 from django.contrib.auth import authenticate, login, logout, views as auth_views
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse_lazy
 from django.db import transaction
 from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt

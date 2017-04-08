@@ -21,7 +21,7 @@ class EmailBackend(AuthenticationBackend):
     Login with the email address and normal password
     """
 
-    def authenticate(self, username=None, password=None, **kwargs):
+    def authenticate(self, request, username=None, password=None, **kwargs):
         UserModel = get_user_model()
         try:
             user = UserModel.objects.get(email=username)
