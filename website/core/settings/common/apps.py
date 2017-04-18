@@ -9,5 +9,6 @@ INSTALLED_APPS = [
     'mail_templated',
 
     'main',
+    'plugins',
     'user',
 ]
