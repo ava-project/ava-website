@@ -1,12 +1,18 @@
+import zipfile
+
 from django import forms
 
 from .validators import ZipArchiveValidator
 
 
-class UploadPluginForm(forms.Form):
-    archive = forms.FileField(
-        label='Plugin .zip',
-        validators=[ZipArchiveValidator()]
-    )
+class PluginArchiveField(forms.FileField):
+    default_validators=[ZipArchiveValidator()]
+    label='Plugin .zip'
 
-    # def clean(self):
+
+    def to_python(self, data):
+        return super().to_python(data)
+
+
+class UploadPluginForm(forms.Form):
+    archive = PluginArchiveField()
