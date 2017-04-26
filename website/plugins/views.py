@@ -12,4 +12,5 @@ class UploadPluginView(FormView):
         return '/'
 
     def form_valid(self, form):
+        test = form.cleaned_data['archive']
         return super().form_valid(form)

@@ -40,6 +40,18 @@ class UploadPluginTests(TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertContains(response, '<li>No manifest.json found in archive</li>')
 
+    def test_bad_format_config_file_archive(self):
+        with open_file('bad_format_json.zip') as plugin:
+            response = self.client.post(url, {'archive': plugin})
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, '<li>Error with manifest.json, bad Json Format</li>')
+
+    def test_bad_config_file_archive(self):
+        with open_file('bad_config.zip') as plugin:
+            response = self.client.post(url, {'archive': plugin})
+            self.assertEqual(response.status_code, 200)
+            self.assertContains(response, 'Error in manifest.json')
+
     def test_good_archive(self):
         with open_file('good_plugin.zip') as plugin:
             response = self.client.post(url, {'archive': plugin})
