@@ -12,5 +12,4 @@ class UploadPluginView(FormView):
         return '/'
 
     def form_valid(self, form):
-        print('form valid')
         return super().form_valid(form)

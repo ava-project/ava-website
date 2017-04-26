@@ -16,4 +16,5 @@ from .auth import *
 from .database import *
 from .middleware import *
 from .template import *
+from .uploads import *
 from .zone import *
