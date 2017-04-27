@@ -4,6 +4,8 @@ services:
 
   web:
     build: ./website
+    volumes:
+      - ./uploads:/data
     ports:
       - 8000:8000
 
@@ -16,3 +18,7 @@ services:
     image: schickling/mailcatcher
     ports:
       - 1080:1080
+
+volumes:
+  db-data:
+    driver: local

@@ -10,4 +10,6 @@ ADD . /app
 
 ENV PYTHONUNBUFFERED 1
 
+VOLUME /data
+
 CMD ./dev.sh

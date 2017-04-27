@@ -11,6 +11,8 @@ STATIC_ROOT = '/app/public'
 ROOT_URLCONF = 'core.urls'
 WSGI_APPLICATION = 'core.wsgi.application'
 
+MEDIA_ROOT = '/data'
+
 from .apps import *
 from .auth import *
 from .database import *

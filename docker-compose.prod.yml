@@ -31,7 +31,3 @@ services:
     volumes:
       - ./public:/app/public
     command: python3 manage.py collectstatic --noinput
-
-volumes:
-  db-data:
-    driver: local
