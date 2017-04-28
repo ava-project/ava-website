@@ -13,7 +13,7 @@ services:
       - ./website:/app
     depends_on:
       - db
-    command: ./prod.sh
+    command: ./entrypoints/dev.sh
     restart: always
 
   db:

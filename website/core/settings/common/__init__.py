@@ -1,4 +1,5 @@
 import os
+from . import apps_in_folder
 
 env = os.environ
 

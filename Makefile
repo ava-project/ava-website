@@ -13,7 +13,7 @@ django:
 
 test:
 	$(eval CONFIG_FILE=docker-compose.test.yml)
-	${MANAGE} test
+	${MANAGE} test -s --where apps
 
 run:
 	${COMMAND} up web
