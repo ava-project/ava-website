@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend
 
+
 class AuthenticationBackend(ModelBackend):
     """
     Join the request with the profile

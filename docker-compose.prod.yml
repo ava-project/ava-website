@@ -13,7 +13,7 @@ services:
       - ./website:/app
     depends_on:
       - db
-    command: ./entrypoints/dev.sh
+    command: ./entrypoints/prod.sh
     restart: always
 
   db:
@@ -31,3 +31,8 @@ services:
     volumes:
       - ./public:/app/public
     command: python3 manage.py collectstatic --noinput
+
+
+volumes:
+  db-data:
+    driver: local
