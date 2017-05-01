@@ -2,6 +2,9 @@ import os
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
+
+from main.utils import generate_token
 
 
 class Plugin(models.Model):
@@ -9,17 +12,36 @@ class Plugin(models.Model):
     description = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    def upload_from_manifest(self, manifest):
+    def update_from_manifest(self, manifest):
+        """
+        This fonction update the plugin information from the manifest file
+        """
         manifest['description'] = "TODO IMPLEMENT DESCRIPTION"
         self.description = manifest['description']
+
+    @property
+    def url(self):
+        return reverse('plugins:detail', args=[self.author.username, self.name])
 
 
 def plugin_directory_path(instance, filename):
     filename = '{}.zip'.format(str(instance.version))
-    return 'plugins/{0}/{1}'.format(instance.plugin.name, filename)
+    return 'plugins/{}/{}/{}'.format(instance.plugin.author.username, instance.plugin.name, filename)
 
 
 class Release(models.Model):
     plugin = models.ForeignKey(Plugin, on_delete=models.CASCADE)
     version = models.IntegerField(default=0)
     archive = models.FileField(upload_to=plugin_directory_path)
+
+
+class DownloadRelease(models.Model):
+    plugin = models.ForeignKey(Plugin, on_delete=models.CASCADE)
+    release = models.ForeignKey(Release, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    token = models.CharField(max_length=50, default=generate_token)
+
+    @property
+    def url(self):
+        return reverse('plugins:download-link',
+            args=[self.token])

@@ -10,7 +10,7 @@ from model_utils.models import TimeStampedModel
 from core.behaviors import Expirationable
 from core.utils import send_email
 
-from .utils import generate_token
+from main.utils import generate_token
 
 
 class Device(Expirationable, TimeStampedModel, models.Model):
