@@ -1,9 +1,10 @@
 from django.db import transaction
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import FormView, DetailView
+from django.views.generic import FormView, DetailView, View
 
-from . import forms
-from .models import Plugin, Release
+from . import forms, mixins
+from .models import Plugin, Release, DownloadRelease
 
 
 class UploadPluginView(FormView):
@@ -33,14 +34,29 @@ class UploadPluginView(FormView):
         return self.plugin.url
 
 
-class PluginDetailView(DetailView):
-    model = Plugin
+class PluginDetailView(mixins.PluginDetailMixin, DetailView):
     template_name = 'plugins/detail.html'
 
-    def get_object(self, queryset=None):
-        kwargs = {
-            'author__username': self.kwargs['username'],
-            'name': self.kwargs['plugin_name']
-        }
-        queryset = self.model.objects
-        return get_object_or_404(queryset, **kwargs)
+
+class PluginDownloadView(mixins.PluginDetailMixin, View):
+
+    @transaction.atomic
+    def get(self, request, **kwargs):
+        plugin = self.get_object()
+        release = plugin.release_set.order_by('version').first()
+        download = DownloadRelease(plugin=plugin, release=release,
+            author=self.request.user)
+        download.save()
+        return JsonResponse({
+            'url': download.url
+        })
+
+
+class PluginDownloadLinkView(View):
+
+    def get(self, request, **kwargs):
+        download = get_object_or_404(DownloadRelease, token=self.kwargs['token'])
+        archive = download.release.archive
+        response = HttpResponse(archive.read(), content_type='application/octet-stream')
+        response['Content-Disposition'] = 'inline; filename=' + archive.name
+        return response

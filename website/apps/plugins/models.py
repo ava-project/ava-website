@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 
+from main.utils import generate_token
+
 
 class Plugin(models.Model):
     name = models.CharField(max_length=120)
@@ -31,3 +33,15 @@ class Release(models.Model):
     plugin = models.ForeignKey(Plugin, on_delete=models.CASCADE)
     version = models.IntegerField(default=0)
     archive = models.FileField(upload_to=plugin_directory_path)
+
+
+class DownloadRelease(models.Model):
+    plugin = models.ForeignKey(Plugin, on_delete=models.CASCADE)
+    release = models.ForeignKey(Release, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    token = models.CharField(max_length=50, default=generate_token)
+
+    @property
+    def url(self):
+        return reverse('plugins:download-link',
+            args=[self.token])
