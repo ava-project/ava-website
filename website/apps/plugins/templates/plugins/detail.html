@@ -1,0 +1,11 @@
+{% extends "layout/main.html" %}
+
+{% block content %}
+  <h1>Plugin detail : {{ object.name }}</h1>
+  <h3>List of releases :</h3>
+  <ul>
+    {% for release in object.release_set.all %}
+    <li>{{ release.version }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

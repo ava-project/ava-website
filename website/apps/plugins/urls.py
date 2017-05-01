@@ -9,4 +9,7 @@ urlpatterns = [
     url(r'^upload/?$',
         login_required(views.UploadPluginView.as_view()),
         name='upload'),
+    url(r'^(?P<username>[^/]+)/(?P<plugin_name>[^/]+)/?$',
+        views.PluginDetailView.as_view(),
+        name='detail'),
 ]
