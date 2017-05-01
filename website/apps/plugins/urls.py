@@ -12,7 +12,7 @@ urlpatterns = [
     url(r'^download/(?P<token>[^/]+)/?$',
         login_required(views.PluginDownloadLinkView.as_view()),
         name='download-link'),
-    url(r'^(?P<username>[^/]+)/(?P<plugin_name>[^/]+)/?',
+    url(r'^(?P<username>[^/]+)/(?P<plugin_name>[^/]+)/',
         include([
             url(r'^$',
                 views.PluginDetailView.as_view(),

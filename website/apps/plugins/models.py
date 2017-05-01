@@ -23,6 +23,10 @@ class Plugin(models.Model):
     def url(self):
         return reverse('plugins:detail', args=[self.author.username, self.name])
 
+    @property
+    def url_download(self):
+        return reverse('plugins:download', args=[self.author.username, self.name])
+
 
 def plugin_directory_path(instance, filename):
     filename = '{}.zip'.format(str(instance.version))
