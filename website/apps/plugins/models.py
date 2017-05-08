@@ -3,11 +3,12 @@ import os
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
+from model_utils.models import TimeStampedModel
 
 from main.utils import generate_token
 
 
-class Plugin(models.Model):
+class Plugin(TimeStampedModel, models.Model):
     name = models.CharField(max_length=120)
     description = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -33,13 +34,13 @@ def plugin_directory_path(instance, filename):
     return 'plugins/{}/{}/{}'.format(instance.plugin.author.username, instance.plugin.name, filename)
 
 
-class Release(models.Model):
+class Release(TimeStampedModel, models.Model):
     plugin = models.ForeignKey(Plugin, on_delete=models.CASCADE)
     version = models.IntegerField(default=0)
     archive = models.FileField(upload_to=plugin_directory_path)
 
 
-class DownloadRelease(models.Model):
+class DownloadRelease(TimeStampedModel, models.Model):
     plugin = models.ForeignKey(Plugin, on_delete=models.CASCADE)
     release = models.ForeignKey(Release, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
