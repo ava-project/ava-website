@@ -4,7 +4,7 @@ django-model-utils==2.6.1
 django-nose==1.4.4
 mock==2.0.0
 pytz==2017.2
-git+https://github.com/ava-project/sdk#egg=0.1.3
+avasdk==0.2.0
 docutils==0.13.1
 gunicorn==19.7.1
 psycopg2==2.7.1

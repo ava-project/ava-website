@@ -1,7 +1,9 @@
 import json, os
+import avasdk
+
 from zipfile import ZipFile, BadZipFile
 
-from avasdk.validate_plugin import validate_plugin
+from avasdk.plugins import validate_manifest
 from django import forms
 from django.core.validators import ValidationError
 
@@ -22,9 +24,7 @@ class PluginArchiveField(forms.FileField):
                 prefix = self.get_prefix(plugin)
                 with plugin.open('{}/manifest.json'.format(prefix)) as myfile:
                     manifest = json.loads(myfile.read())
-                errors = validate_plugin(manifest)
-                if len(errors):
-                    raise ValidationError('Error in manifest.json ({})'.format(errors))
+                validate_manifest(manifest)
                 return manifest
         except BadZipFile:
             raise ValidationError('Bad .zip format')
@@ -34,6 +34,8 @@ class PluginArchiveField(forms.FileField):
             raise ValidationError('No manifest.json found in archive')
         except json.JSONDecodeError:
             raise ValidationError('Error with manifest.json, bad Json Format')
+        except avasdk.exceptions.ValidationError as e:
+            raise ValidationError('Error in manifest.json ({})'.format(e))
 
     def clean(self, data, initial=None):
         f = super().clean(data, initial)
