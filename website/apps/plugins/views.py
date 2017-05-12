@@ -1,7 +1,7 @@
 from django.db import transaction
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import FormView, DetailView, View
+from django.views.generic import FormView, DetailView, ListView, View
 
 from . import forms, mixins
 from .models import Plugin, Release, DownloadRelease
@@ -32,6 +32,11 @@ class UploadPluginView(FormView):
 
     def get_success_url(self):
         return self.plugin.url
+
+
+class PluginListView(ListView):
+    model = Plugin
+    template_name = 'plugins/list.html'
 
 
 class PluginDetailView(mixins.PluginDetailMixin, DetailView):
