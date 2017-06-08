@@ -5,6 +5,7 @@ from django.db import models
 from django.urls import reverse
 from model_utils.models import TimeStampedModel
 
+from core.behaviors import Expirationable
 from main.utils import generate_token
 
 
@@ -40,7 +41,10 @@ class Release(TimeStampedModel, models.Model):
     archive = models.FileField(upload_to=plugin_directory_path)
 
 
-class DownloadRelease(TimeStampedModel, models.Model):
+class DownloadRelease(Expirationable, TimeStampedModel, models.Model):
+    NB_DAY_EXPIRE = 0
+    NB_MINUTE_EXPIRE = 5
+
     plugin = models.ForeignKey(Plugin, on_delete=models.CASCADE)
     release = models.ForeignKey(Release, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -62,7 +62,9 @@ class PluginDownloadLinkView(View):
     def get(self, request, **kwargs):
         download = get_object_or_404(DownloadRelease, token=self.kwargs['token'])
         if request.user != download.author:
-            return HttpResponseForbidden()
+            return HttpResponseForbidden('You are not authorized to download this plugin')
+        if download.is_expired():
+            return HttpResponse('Expired link', status=410)
         archive = download.release.archive
         response = HttpResponse(archive.read(), content_type='application/octet-stream')
         response['Content-Disposition'] = 'inline; filename=' + archive.name
