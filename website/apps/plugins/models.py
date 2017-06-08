@@ -49,6 +49,7 @@ class DownloadRelease(Expirationable, TimeStampedModel, models.Model):
     release = models.ForeignKey(Release, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     token = models.CharField(max_length=50, default=generate_token)
+    is_used = models.BooleanField(default=False)
 
     @property
     def url(self):
