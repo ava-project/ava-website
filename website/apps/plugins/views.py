@@ -1,5 +1,5 @@
 from django.db import transaction
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import FormView, DetailView, ListView, View
 
@@ -61,6 +61,8 @@ class PluginDownloadLinkView(View):
 
     def get(self, request, **kwargs):
         download = get_object_or_404(DownloadRelease, token=self.kwargs['token'])
+        if request.user != download.author:
+            return HttpResponseForbidden()
         archive = download.release.archive
         response = HttpResponse(archive.read(), content_type='application/octet-stream')
         response['Content-Disposition'] = 'inline; filename=' + archive.name
