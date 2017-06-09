@@ -62,9 +62,7 @@ class PluginUpvoteView(mixins.PluginDetailMixin, View):
             Upvote.objects.create(**params)
             plugin.nb_upvote = F('nb_upvote') + 1
             plugin.save(update_fields=['nb_upvote'])
-        return redirect('plugins:detail',
-            username=plugin.author.username,
-            plugin_name=plugin.name)
+        return redirect(plugin.url)
 
 
 class PluginDownvoteView(mixins.PluginDetailMixin, View):
@@ -76,9 +74,7 @@ class PluginDownvoteView(mixins.PluginDetailMixin, View):
         if Upvote.objects.filter(user=request.user, plugin=plugin).delete()[0] == 1:
             plugin.nb_upvote = F('nb_upvote') - 1
             plugin.save(update_fields=['nb_upvote'])
-        return redirect('plugins:detail',
-            username=plugin.author.username,
-            plugin_name=plugin.name)
+        return redirect(plugin.url)
 
 
 class JsonPluginDetailView(mixins.PluginDetailMixin, View):
