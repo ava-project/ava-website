@@ -25,7 +25,7 @@ urlpatterns = [
                 name='detail'),
             url(r'^json/?$',
                 views.JsonPluginDetailView.as_view(),
-                name='detail'),
+                name='detail-json'),
             url(r'^download/?$',
                 login_required(views.PluginDownloadView.as_view()),
                 name='download'),

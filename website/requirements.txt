@@ -1,4 +1,5 @@
 Django==1.11
+django-debug-toolbar==1.8
 django-mail-templated==2.6.5
 django-model-utils==2.6.1
 django-nose==1.4.4
