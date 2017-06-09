@@ -4,10 +4,20 @@
   <a href="{% url "plugins:list" %}">Back to plugin list</a>
   <h1>Plugin detail : {{ object.name }}</h1>
   <p>Number of download : {{ object.nb_download }}</p>
+  <p>
+    Number of upvote : {{ object.nb_upvote }}
+    {% if user.is_authenticated %}
+      {% if user_has_upvoted %}
+        <a href="{% url 'plugins:downvote' username=object.author.username plugin_name=object.name %}">Downvote</a>
+      {% else %}
+        <a href="{% url 'plugins:upvote' username=object.author.username plugin_name=object.name %}">Upvote</a>
+      {% endif %}
+    {% endif %}
+  </p>
   <h3>List of releases :</h3>
   <ul>
     {% for release in object.release_set.all %}
-    <li>{{ release.version }}</li>
+      <li>{{ release.version }}</li>
     {% endfor %}
   </ul>
 {% endblock %}
