@@ -20,7 +20,7 @@ urlpatterns = [
         name='download-link'),
     url(r'^(?P<username>[^/]+)/(?P<plugin_name>[^/]+)/',
         include([
-            url(r'^/?$',
+            url(r'^$',
                 views.PluginDetailView.as_view(),
                 name='detail'),
             url(r'^json/?$',

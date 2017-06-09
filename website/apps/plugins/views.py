@@ -1,4 +1,5 @@
 from django.db import transaction, IntegrityError
+from django.db.models import F
 from django.http import HttpResponseBadRequest,\
     JsonResponse, HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
@@ -97,6 +98,8 @@ class PluginDownloadLinkView(View):
             return HttpResponse('Expired link', status=410)
         download.is_used = True
         download.save()
+        download.plugin.nb_download = F('nb_download') + 1
+        download.plugin.save(update_fields=['nb_download'])
         self.add_download(download.plugin, request.user)
         archive = download.release.archive
         response = HttpResponse(archive.read(), content_type='application/octet-stream')

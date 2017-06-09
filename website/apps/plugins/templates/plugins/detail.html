@@ -3,6 +3,7 @@
 {% block content %}
   <a href="{% url "plugins:list" %}">Back to plugin list</a>
   <h1>Plugin detail : {{ object.name }}</h1>
+  <p>Number of download : {{ object.nb_download }}</p>
   <h3>List of releases :</h3>
   <ul>
     {% for release in object.release_set.all %}
