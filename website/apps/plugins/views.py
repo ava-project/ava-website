@@ -1,5 +1,6 @@
 from django.db import transaction, IntegrityError
-from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
+from django.http import HttpResponseBadRequest,\
+    JsonResponse, HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import FormView, DetailView, ListView, View
 
@@ -45,15 +46,26 @@ class PluginDetailView(mixins.PluginDetailMixin, DetailView):
 
 class PluginDownloadView(mixins.PluginDetailMixin, View):
 
+    def get_release(self, plugin):
+        if not 'version' in self.kwargs:
+            return plugin.release_set.order_by('-version').first()
+        try:
+            return plugin.release_set.get(version=int(self.kwargs['version']))
+        except:
+            return None
+
     @transaction.atomic
     def get(self, request, **kwargs):
         plugin = self.get_object()
-        release = plugin.release_set.order_by('version').first()
+        release = self.get_release(plugin)
+        if not release:
+            return HttpResponseBadRequest('Can \'t find this version')
         download = DownloadRelease(plugin=plugin, release=release,
             author=self.request.user)
         download.save()
         return JsonResponse({
-            'url': download.url
+            'url': download.url,
+            'version': release.version,
         })
 
 

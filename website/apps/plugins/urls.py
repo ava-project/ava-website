@@ -23,6 +23,9 @@ urlpatterns = [
             url(r'^download/?$',
                 login_required(views.PluginDownloadView.as_view()),
                 name='download'),
+            url(r'^download/(?P<version>[^/]+)/$',
+                login_required(views.PluginDownloadView.as_view()),
+                name='download'),
         ])
     ),
 ]
