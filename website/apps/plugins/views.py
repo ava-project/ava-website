@@ -44,22 +44,32 @@ class PluginDetailView(mixins.PluginDetailMixin, DetailView):
     template_name = 'plugins/detail.html'
 
 
+class JsonPluginDetailView(mixins.PluginDetailMixin, View):
+
+    def get(self, *args, **kwargs):
+        plugin = self.get_object()
+        return JsonResponse({
+            'name': plugin.name,
+            'author': plugin.author.username,
+            'last_version': plugin.release_set.order_by('-version').first().version,
+            'versions': list(plugin.release_set.values_list('version', flat=True)),
+        })
+
+
 class PluginDownloadView(mixins.PluginDetailMixin, View):
 
     def get_release(self, plugin):
         if not 'version' in self.kwargs:
             return plugin.release_set.order_by('-version').first()
-        try:
-            return plugin.release_set.get(version=int(self.kwargs['version']))
-        except:
-            return None
+        return plugin.release_set.get(version=int(self.kwargs['version']))
 
     @transaction.atomic
     def get(self, request, **kwargs):
         plugin = self.get_object()
-        release = self.get_release(plugin)
-        if not release:
-            return HttpResponseBadRequest('Can \'t find this version')
+        try:
+            release = self.get_release(plugin)
+        except Release.DoesNotExist:
+            return HttpResponseBadRequest('Can\'t find this version')
         download = DownloadRelease(plugin=plugin, release=release,
             author=self.request.user)
         download.save()

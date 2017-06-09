@@ -15,17 +15,20 @@ urlpatterns = [
     url(r'^download/(?P<token>[^/]+)/?$',
         login_required(views.PluginDownloadLinkView.as_view()),
         name='download-link'),
-    url(r'^(?P<username>[^/]+)/(?P<plugin_name>[^/]+)/',
+    url(r'^(?P<username>[^/]+)/(?P<plugin_name>[^/]+)/?',
         include([
             url(r'^$',
                 views.PluginDetailView.as_view(),
+                name='detail'),
+            url(r'^json/?$',
+                views.JsonPluginDetailView.as_view(),
                 name='detail'),
             url(r'^download/?$',
                 login_required(views.PluginDownloadView.as_view()),
                 name='download'),
             url(r'^download/(?P<version>[^/]+)/$',
                 login_required(views.PluginDownloadView.as_view()),
-                name='download'),
+                name='download-version'),
         ])
     ),
 ]
