@@ -3,9 +3,11 @@ from django.http import HttpResponseBadRequest,\
     JsonResponse, HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import FormView, DetailView, ListView, View
+from django.urls import reverse
 
 from . import forms, mixins
-from .models import Plugin, Release, DownloadRelease, UserPlugins
+from .models import Plugin, Release,\
+    DownloadRelease, UserPlugins, UserPlugins
 
 
 class UploadPluginView(FormView):
@@ -100,3 +102,22 @@ class PluginDownloadLinkView(View):
         response = HttpResponse(archive.read(), content_type='application/octet-stream')
         response['Content-Disposition'] = 'inline; filename=' + archive.name
         return response
+
+
+class MyPluginListView(View):
+    """
+    This endpoint retrieves the list of plugins the user installed
+    """
+
+    def generate_plugin_data(self, plugin):
+        username = plugin.plugin.author.username
+        name = plugin.plugin.name
+        return {
+            'author': username,
+            'name': name,
+            'url': reverse('plugins:download', args=(username, name)),
+        }
+
+    def get(self, request, **kwargs):
+        plugins = UserPlugins.objects.filter(user=request.user)
+        return JsonResponse([self.generate_plugin_data(plugin) for plugin in plugins], safe=False)
