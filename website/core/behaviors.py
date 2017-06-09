@@ -3,7 +3,7 @@ import datetime
 from django.utils import timezone
 
 
-class Expirationable():
+class Expirationable(object):
     NB_DAY_EXPIRE = 2
     NB_MINUTE_EXPIRE = 0
 

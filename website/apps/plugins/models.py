@@ -55,3 +55,11 @@ class DownloadRelease(Expirationable, TimeStampedModel, models.Model):
     def url(self):
         return reverse('plugins:download-link',
             args=[self.token])
+
+
+class UserPlugins(TimeStampedModel, models.Model):
+    plugin = models.ForeignKey(Plugin, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('plugin', 'user')

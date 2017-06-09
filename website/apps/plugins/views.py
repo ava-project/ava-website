@@ -1,10 +1,10 @@
-from django.db import transaction
+from django.db import transaction, IntegrityError
 from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import FormView, DetailView, ListView, View
 
 from . import forms, mixins
-from .models import Plugin, Release, DownloadRelease
+from .models import Plugin, Release, DownloadRelease, UserPlugins
 
 
 class UploadPluginView(FormView):
@@ -59,6 +59,12 @@ class PluginDownloadView(mixins.PluginDetailMixin, View):
 
 class PluginDownloadLinkView(View):
 
+    def add_download(self, plugin, user):
+        params = {'user': user, 'plugin': plugin}
+        if UserPlugins.objects.filter(**params).count() == 0:
+            UserPlugins.objects.create(**params)
+
+    @transaction.atomic
     def get(self, request, **kwargs):
         download = get_object_or_404(DownloadRelease, token=self.kwargs['token'])
         if request.user != download.author:
@@ -67,6 +73,7 @@ class PluginDownloadLinkView(View):
             return HttpResponse('Expired link', status=410)
         download.is_used = True
         download.save()
+        self.add_download(download.plugin, request.user)
         archive = download.release.archive
         response = HttpResponse(archive.read(), content_type='application/octet-stream')
         response['Content-Disposition'] = 'inline; filename=' + archive.name
