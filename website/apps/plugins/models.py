@@ -13,6 +13,7 @@ class Plugin(TimeStampedModel, models.Model):
     name = models.CharField(max_length=120)
     description = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    nb_download = models.IntegerField(default=0)
 
     def update_from_manifest(self, manifest):
         """
