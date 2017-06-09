@@ -9,4 +9,5 @@ avasdk==0.2.0
 docutils==0.13.1
 gunicorn==19.7.1
 psycopg2==2.7.1
+pyinotify==0.9.6
 raven==6.0.0
