@@ -14,6 +14,7 @@ class Plugin(TimeStampedModel, models.Model):
     description = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     nb_download = models.IntegerField(default=0)
+    nb_upvote = models.IntegerField(default=0)
 
     def update_from_manifest(self, manifest):
         """
@@ -29,6 +30,10 @@ class Plugin(TimeStampedModel, models.Model):
     @property
     def url_download(self):
         return reverse('plugins:download', args=[self.author.username, self.name])
+
+    def user_has_upvoted(self, user):
+        query = Upvote.objects.filter(plugin=self, user=user)
+        return True if query.count() else False
 
 
 def plugin_directory_path(instance, filename):
@@ -59,6 +64,14 @@ class DownloadRelease(Expirationable, TimeStampedModel, models.Model):
 
 
 class UserPlugins(TimeStampedModel, models.Model):
+    plugin = models.ForeignKey(Plugin, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('plugin', 'user')
+
+
+class Upvote(TimeStampedModel, models.Model):
     plugin = models.ForeignKey(Plugin, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 

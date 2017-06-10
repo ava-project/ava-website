@@ -13,6 +13,8 @@ ROOT_URLCONF = 'core.urls'
 WSGI_APPLICATION = 'core.wsgi.application'
 MEDIA_ROOT = '/data'
 
+SITE_ID = 1
+
 from .apps import *
 from .auth import *
 from .database import *
