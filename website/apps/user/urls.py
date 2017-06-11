@@ -39,7 +39,10 @@ urlpatterns = [
         }),
     url(r'^profile/password_change/done/?$',
         login_required(django_auth_views.password_change_done),
-        name='password_change_done'),
+        name='password_change_done',
+        kwargs={
+            'template_name': 'user/edit-password-done.html',
+        }),
 
     # token validation
     url(r'^resend_validation_email/?$',
