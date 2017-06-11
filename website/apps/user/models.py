@@ -17,7 +17,7 @@ class Device(Expirationable, TimeStampedModel, models.Model):
     """
     Represent a Daemon using the JSON API
     """
-    NB_DAY_EXPIRE = 14 # expire after 2 weeks
+    NB_DAY_EXPIRE = 14  # expire after 2 weeks
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     token = models.CharField(max_length=50, default=generate_token, unique=True)

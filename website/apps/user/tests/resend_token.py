@@ -1,18 +1,15 @@
-import datetime
-
 from django.core import mail
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.urls import reverse
 
-from ..models import EmailValidationToken
 
-"""
-Test if validation email is correctly sent when
-you hit the endpoint, by counting the number of
-email sent
-"""
 class ResendValidationEmailTest(TestCase):
+    """
+    Test if validation email is correctly sent when
+    you hit the endpoint, by counting the number of
+    email sent
+    """
 
     def create_user(self):
         form_data = {
@@ -37,11 +34,11 @@ class ResendValidationEmailTest(TestCase):
         self.assertEqual(len(mail.outbox), 2)
 
 
-"""
-Make sure the email is not sent if the account is already
-activated
-"""
 class ResendValidationEmailForAccountActivatedTest(TestCase):
+    """
+    Make sure the email is not sent if the account is already
+    activated
+    """
 
     def create_user(self):
         form_data = {

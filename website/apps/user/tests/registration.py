@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 from ..forms import RegisterForm
 
+
 class RegisterTest(TestCase):
 
     def setUp(self):

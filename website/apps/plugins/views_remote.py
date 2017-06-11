@@ -1,14 +1,13 @@
-from django.db import transaction, IntegrityError
+from django.db import transaction
 from django.db.models import F
 from django.http import HttpResponseBadRequest,\
     JsonResponse, HttpResponse, HttpResponseForbidden
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import FormView, DetailView, ListView, View
+from django.shortcuts import get_object_or_404
+from django.views.generic import View
 from django.urls import reverse
 
-from . import forms, mixins
-from .models import Plugin, Release, Upvote,\
-    DownloadRelease, UserPlugins, UserPlugins
+from . import mixins
+from .models import Release, DownloadRelease, UserPlugins
 
 
 class PluginDetailView(mixins.PluginDetailMixin, View):
@@ -26,7 +25,7 @@ class PluginDetailView(mixins.PluginDetailMixin, View):
 class PluginDownloadView(mixins.PluginDetailMixin, View):
 
     def get_release(self, plugin):
-        if not 'version' in self.kwargs:
+        if 'version' not in self.kwargs:
             return plugin.release_set.order_by('-version').first()
         return plugin.release_set.get(version=int(self.kwargs['version']))
 

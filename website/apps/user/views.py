@@ -11,21 +11,17 @@ List of classes:
 - RemoteLogoutView
 """
 
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.db import transaction
-from django.http import HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.edit import FormView, UpdateView
 from django.views.generic import TemplateView, View
 
 from . import forms
 from .mixins import LoginMixin
-from .backend import AuthenticationBackend
-from .models import EmailValidationToken, Device
+from .models import EmailValidationToken
 
 
 class RegisterView(LoginMixin, FormView):

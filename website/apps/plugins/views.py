@@ -1,14 +1,10 @@
-from django.db import transaction, IntegrityError
+from django.db import transaction
 from django.db.models import F
-from django.http import HttpResponseBadRequest,\
-    JsonResponse, HttpResponse, HttpResponseForbidden
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect
 from django.views.generic import FormView, DetailView, ListView, View
-from django.urls import reverse
 
 from . import forms, mixins
-from .models import Plugin, Release, Upvote,\
-    DownloadRelease, UserPlugins, UserPlugins
+from .models import Plugin, Release, Upvote
 
 
 class UploadPluginView(FormView):
@@ -70,7 +66,6 @@ class PluginDownvoteView(mixins.PluginDetailMixin, View):
     @transaction.atomic
     def get(self, request, *args, **kwargs):
         plugin = self.get_object()
-        params = {'user': request.user, 'plugin': plugin}
         if Upvote.objects.filter(user=request.user, plugin=plugin).delete()[0] == 1:
             plugin.nb_upvote = F('nb_upvote') - 1
             plugin.save(update_fields=['nb_upvote'])

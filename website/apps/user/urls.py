@@ -7,8 +7,6 @@ from .decorators import remote_login_required
 
 app_name = 'user'
 
-
-
 urlpatterns = [
     # changing visitor state
     url(r'^register/?$',
