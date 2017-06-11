@@ -23,6 +23,27 @@ urlpatterns = [
         django_auth_views.logout,
         name='logout'),
 
+    # password reset
+    url(r'^reset-password/?$',
+        django_auth_views.password_reset,
+        name='password_reset',
+        kwargs={
+            'post_reset_redirect': 'user:password_reset_done',
+            'email_template_name': 'email/password_reset_email.html',
+        }),
+    url(r'^reset-password/done/?$',
+        django_auth_views.password_reset_done,
+        name='password_reset_done'),
+    url(r'^reset-link/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        django_auth_views.password_reset_confirm,
+        name='password_reset_confirm',
+        kwargs={
+            'post_reset_redirect': 'user:password_reset_complete',
+        }),
+    url(r'^reset-password/compete/?$',
+        django_auth_views.password_reset_complete,
+        name='password_reset_complete'),
+
     # profile
     url(r'^profile/?$',
         login_required(views.ProfileView.as_view()),
@@ -30,14 +51,14 @@ urlpatterns = [
     url(r'^profile/edit/?$',
         login_required(views.ProfileEditView.as_view()),
         name='edit-profile'),
-    url(r'^profile/password_change/?$',
+    url(r'^profile/password-change/?$',
         login_required(django_auth_views.password_change),
         name='password_change',
         kwargs={
             'template_name': 'user/edit-password.html',
             'post_change_redirect': 'user:password_change_done',
         }),
-    url(r'^profile/password_change/done/?$',
+    url(r'^profile/password-change/done/?$',
         login_required(django_auth_views.password_change_done),
         name='password_change_done',
         kwargs={
