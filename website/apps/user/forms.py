@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth import password_validation
 
 from .validators import UsernameValidator, emailUniqueValidator
 
@@ -15,7 +16,17 @@ class RegisterForm(forms.ModelForm):
         validators=[UsernameValidator()],
         required=True
     )
-    password = forms.CharField(widget=forms.PasswordInput)
+    password = forms.CharField(
+        strip=False,
+        widget=forms.PasswordInput,
+        help_text=password_validation.password_validators_help_text_html(),
+    )
+
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        self.instance.username = self.cleaned_data.get('username')
+        password_validation.validate_password(password, self.instance)
+        return password
 
     class Meta:
         model = User
