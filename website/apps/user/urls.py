@@ -2,10 +2,13 @@ from django.conf.urls import url
 from django.contrib.auth import views as django_auth_views
 from django.contrib.auth.decorators import login_required
 
-from . import views
+from . import views, views_remote
 from .decorators import remote_login_required
 
 app_name = 'user'
+
+
+
 urlpatterns = [
     # changing visitor state
     url(r'^register/?$',
@@ -44,15 +47,14 @@ urlpatterns = [
         views.ValidateTokenEmailView.as_view(),
         name='validate-email'),
 
-
     # for json api
     url(r'^login.json/?$',
-        views.RemoteLoginView.as_view(),
+        views_remote.RemoteLoginView.as_view(),
         name='login-json'),
     url(r'^me.json/?$',
-        remote_login_required(views.RemoteInfoUserView.as_view()),
+        remote_login_required(views_remote.RemoteInfoUserView.as_view()),
         name='me-json'),
     url(r'^logout.json/?$',
-        remote_login_required(views.RemoteLogoutView.as_view()),
+        remote_login_required(views_remote.RemoteLogoutView.as_view()),
         name='logout-json'),
 ]
