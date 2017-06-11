@@ -11,7 +11,7 @@ List of classes:
 - RemoteLogoutView
 """
 
-from django.contrib.auth import authenticate, logout
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.http import HttpResponseBadRequest, JsonResponse
@@ -23,6 +23,7 @@ from django.views.generic.edit import FormView, UpdateView
 from django.views.generic import TemplateView, View
 
 from . import forms
+from .backend import AuthenticationBackend
 from .models import EmailValidationToken, Device
 
 
@@ -33,6 +34,11 @@ class RegisterView(FormView):
 
     template_name = "user/register.html"
     form_class = forms.RegisterForm
+
+    def login_user(self, username, password):
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(self.request, user)
 
     @transaction.atomic
     def form_valid(self, form):
@@ -48,6 +54,7 @@ class RegisterView(FormView):
             data['password']
         )
         EmailValidationToken.create_and_send_validation_email(user, self.request)
+        self.login_user(data['username'], data['password'])
         return redirect('main:index')
 
 
