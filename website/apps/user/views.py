@@ -23,22 +23,18 @@ from django.views.generic.edit import FormView, UpdateView
 from django.views.generic import TemplateView, View
 
 from . import forms
+from .mixins import LoginMixin
 from .backend import AuthenticationBackend
 from .models import EmailValidationToken, Device
 
 
-class RegisterView(FormView):
+class RegisterView(LoginMixin, FormView):
     """
     This endpoint is a generic form view for the user registration.
     """
 
     template_name = "user/register.html"
     form_class = forms.RegisterForm
-
-    def login_user(self, username, password):
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(self.request, user)
 
     @transaction.atomic
     def form_valid(self, form):
@@ -54,7 +50,7 @@ class RegisterView(FormView):
             data['password']
         )
         EmailValidationToken.create_and_send_validation_email(user, self.request)
-        self.login_user(data['username'], data['password'])
+        self.login_user(user)
         return redirect('main:index')
 
 
@@ -80,7 +76,7 @@ class ProfileEditView(UpdateView):
         return self.request.user
 
 
-class ValidateTokenEmailView(View):
+class ValidateTokenEmailView(LoginMixin, View):
     """
     View validating token received by email.
     """
@@ -99,8 +95,11 @@ class ValidateTokenEmailView(View):
             if not token.is_valid(request.GET['email']):
                 raise ValueError('invalid token')
             token.consume()
+            if not request.user.is_authenticated:
+                self.login_user(token.user)
             return redirect('main:index')
-        except (EmailValidationToken.DoesNotExist, ValueError):
+        except (EmailValidationToken.DoesNotExist, ValueError) as e:
+            print(e)
             return HttpResponseBadRequest('Something went wrong with your token, please try again')
 
 
