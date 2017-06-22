@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 
+
 def remote_login_required(view_func):
     """
     Decorator for views that checks that the user is logged in, redirecting

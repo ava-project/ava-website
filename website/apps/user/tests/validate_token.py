@@ -39,7 +39,7 @@ class ValidateTokenTest(ValidateTokenMixin, TestCase):
         self.assertFalse(token.consumed)
         self.assertFalse(self.user.profile.validated)
         url = '/user/validate_email?email={}&token={}'
-        response = self.client.get(url.format(self.user.email, token.token))
+        self.client.get(url.format(self.user.email, token.token))
         token.refresh_from_db()
         self.user.profile.refresh_from_db()
         self.assertTrue(token.consumed)

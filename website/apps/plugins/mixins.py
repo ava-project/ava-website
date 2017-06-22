@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 
 from .models import Plugin
 
+
 class PluginDetailMixin(object):
     model = Plugin
 

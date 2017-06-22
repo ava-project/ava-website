@@ -1,4 +1,3 @@
-import os
 import json
 
 from django.contrib.auth.models import User
@@ -18,7 +17,7 @@ class DownloadPluginTests(TestCase):
         self.user = User.objects.create_user('username', 'email@email.fr', 'password')
         self.client.force_login(self.user)
         with open_file('good_plugin.zip') as plugin:
-            response = self.client.post(url_upload, {'archive': plugin})
+            self.client.post(url_upload, {'archive': plugin})
 
     def test_generate_url(self):
         plugin = Plugin.objects.first()

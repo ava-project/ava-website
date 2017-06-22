@@ -8,3 +8,5 @@ DATABASES = {
 }
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+AUTH_PASSWORD_VALIDATORS = []
