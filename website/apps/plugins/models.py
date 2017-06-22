@@ -30,6 +30,8 @@ class Plugin(TimeStampedModel, models.Model):
         return reverse('plugins:download', args=[self.author.username, self.name])
 
     def user_has_upvoted(self, user):
+        if not user.is_authenticated():
+            return False
         query = Upvote.objects.filter(plugin=self, user=user)
         return True if query.count() else False
 
