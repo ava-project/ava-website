@@ -21,13 +21,16 @@ class UploadPluginView(FormView):
     def form_valid(self, form):
         data_plugin = form.cleaned_data['archive']
         self.plugin = self.get_plugin(data_plugin['manifest']['name'])
-        self.plugin.update_from_manifest(data_plugin['manifest'])
         self.plugin.save()
         nb_release = Release.objects.filter(plugin=self.plugin).count() + 1
-        Release(
+        release = Release(
             plugin=self.plugin,
             version=nb_release,
-            archive=data_plugin['zipfile']).save()
+            description=data_plugin['manifest'].get('description', ''),
+            archive=data_plugin['zipfile'])
+        release.save()
+        if 'tags' in data_plugin['manifest']:
+            release.tags.add(*data_plugin['manifest']['tags'])
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -45,6 +48,7 @@ class PluginDetailView(mixins.PluginDetailMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['user_has_upvoted'] = self.object.user_has_upvoted(self.request.user)
+        context['release'] = self.object.get_release()
         return context
 
 

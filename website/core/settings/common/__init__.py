@@ -10,6 +10,7 @@ SECRET_KEY = env.get('SECRET_KEY', 'weird punchy keyboard')
 ROOT_URLCONF = 'core.urls'
 WSGI_APPLICATION = 'core.wsgi.application'
 SITE_ID = 1
+TAGGIT_CASE_INSENSITIVE = True
 
 from .apps import *
 from .auth import *
