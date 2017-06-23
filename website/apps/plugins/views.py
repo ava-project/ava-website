@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.views.generic import FormView, DetailView, ListView, View
 
 from . import forms, mixins
-from .models import Plugin, Release, Upvote
+from .models import Plugin, PluginCommand, Release, Upvote
 
 
 class UploadPluginView(FormView):
@@ -31,6 +31,13 @@ class UploadPluginView(FormView):
         release.save()
         if 'tags' in data_plugin['manifest']:
             release.tags.add(*data_plugin['manifest']['tags'])
+        for command in data_plugin['manifest'].get('commands', []):
+            PluginCommand(
+                release=release,
+                plugin=self.plugin,
+                name=command['name'],
+                description=command['description'],
+            ).save()
         return super().form_valid(form)
 
     def get_success_url(self):

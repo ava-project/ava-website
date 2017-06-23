@@ -32,8 +32,14 @@
       <li>{{ tag }}</li>
     {% endfor %}
   </ul>
+  <h3>command:</h3>
+  <div>
+    {% for command in release.plugincommand_set.all %}
+    name : {{ command.name }}<br />
+    description : {{ command.description }}<br />
+    {% endfor %}
+  </div>
   <h3>Comments :</h3>
-
   {% if user.is_authenticated %}
       {% get_comment_form for object as form %}
       <form action="{% comment_form_target %}" method="POST">

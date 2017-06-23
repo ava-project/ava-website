@@ -45,6 +45,13 @@ class Release(TimeStampedModel, models.Model):
     tags = TaggableManager()
 
 
+class PluginCommand(models.Model):
+    release = models.ForeignKey(Release, on_delete=models.CASCADE)
+    plugin = models.ForeignKey(Plugin, on_delete=models.CASCADE)
+    name = models.CharField(max_length=120)
+    description = models.TextField(default='')
+
+
 class DownloadRelease(Expirationable, TimeStampedModel, models.Model):
     NB_DAY_EXPIRE = 0
     NB_MINUTE_EXPIRE = 5
