@@ -5,6 +5,10 @@
 {% block content %}
   <a href="{% url "plugins:list" %}">Back to plugin list</a>
   <h1>Plugin detail : {{ object.name }}</h1>
+  <p>
+    {{ release.description }}
+  </p>
+  <hr />
   <p>Number of download : {{ object.nb_download }}</p>
   <p>
     Number of upvote : {{ object.nb_upvote }}
@@ -16,14 +20,29 @@
       {% endif %}
     {% endif %}
   </p>
+  <div>
+    {{ release.readme_html|safe }}
+  </div>
   <h3>List of releases :</h3>
   <ul>
     {% for release in object.release_set.all %}
       <li>{{ release.version }}</li>
     {% endfor %}
   </ul>
+  <h3>Tags:</h3>
+  <ul>
+    {% for tag in release.tags.names %}
+      <li>{{ tag }}</li>
+    {% endfor %}
+  </ul>
+  <h3>command:</h3>
+  <div>
+    {% for command in release.plugincommand_set.all %}
+    name : {{ command.name }}<br />
+    description : {{ command.description }}<br />
+    {% endfor %}
+  </div>
   <h3>Comments :</h3>
-
   {% if user.is_authenticated %}
       {% get_comment_form for object as form %}
       <form action="{% comment_form_target %}" method="POST">

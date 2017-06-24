@@ -13,3 +13,6 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 
 MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+
+# make template easier to debug
+TEMPLATES[0]['OPTIONS']['string_if_invalid'] = 'INVALID EXPRESSION: %s'

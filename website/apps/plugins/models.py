@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from model_utils.models import TimeStampedModel
+from taggit.managers import TaggableManager
 
 from core.behaviors import Expirationable
 from main.utils import generate_token
@@ -9,17 +10,9 @@ from main.utils import generate_token
 
 class Plugin(TimeStampedModel, models.Model):
     name = models.CharField(max_length=120)
-    description = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     nb_download = models.IntegerField(default=0)
     nb_upvote = models.IntegerField(default=0)
-
-    def update_from_manifest(self, manifest):
-        """
-        This fonction update the plugin information from the manifest file
-        """
-        manifest['description'] = "TODO IMPLEMENT DESCRIPTION"
-        self.description = manifest['description']
 
     @property
     def url(self):
@@ -28,6 +21,9 @@ class Plugin(TimeStampedModel, models.Model):
     @property
     def url_download(self):
         return reverse('plugins:download', args=[self.author.username, self.name])
+
+    def get_release(self, version=None):
+        return self.release_set.order_by('-created').first()
 
     def user_has_upvoted(self, user):
         if not user.is_authenticated():
@@ -45,6 +41,17 @@ class Release(TimeStampedModel, models.Model):
     plugin = models.ForeignKey(Plugin, on_delete=models.CASCADE)
     version = models.IntegerField(default=0)
     archive = models.FileField(upload_to=plugin_directory_path)
+    description = models.TextField(default='')
+    readme = models.TextField(default='')
+    readme_html = models.TextField(default='')
+    tags = TaggableManager()
+
+
+class PluginCommand(models.Model):
+    release = models.ForeignKey(Release, on_delete=models.CASCADE)
+    plugin = models.ForeignKey(Plugin, on_delete=models.CASCADE)
+    name = models.CharField(max_length=120)
+    description = models.TextField(default='')
 
 
 class DownloadRelease(Expirationable, TimeStampedModel, models.Model):

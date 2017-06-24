@@ -3,8 +3,10 @@ from django.db.models import F
 from django.shortcuts import redirect
 from django.views.generic import FormView, DetailView, ListView, View
 
+from markdown import markdown as compiler_markdown
+
 from . import forms, mixins
-from .models import Plugin, Release, Upvote
+from .models import Plugin, PluginCommand, Release, Upvote
 
 
 class UploadPluginView(FormView):
@@ -21,13 +23,26 @@ class UploadPluginView(FormView):
     def form_valid(self, form):
         data_plugin = form.cleaned_data['archive']
         self.plugin = self.get_plugin(data_plugin['manifest']['name'])
-        self.plugin.update_from_manifest(data_plugin['manifest'])
         self.plugin.save()
         nb_release = Release.objects.filter(plugin=self.plugin).count() + 1
-        Release(
+        release = Release(
             plugin=self.plugin,
             version=nb_release,
-            archive=data_plugin['zipfile']).save()
+            description=data_plugin['manifest'].get('description', ''),
+            archive=data_plugin['zipfile'])
+        if data_plugin['readme']:
+            release.readme = data_plugin['readme']
+            release.readme_html = compiler_markdown(data_plugin['readme'], extensions=['markdown.extensions.tables'])
+        release.save()
+        if 'tags' in data_plugin['manifest']:
+            release.tags.add(*data_plugin['manifest']['tags'])
+        for command in data_plugin['manifest'].get('commands', []):
+            PluginCommand(
+                release=release,
+                plugin=self.plugin,
+                name=command['name'],
+                description=command['description'],
+            ).save()
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -45,6 +60,7 @@ class PluginDetailView(mixins.PluginDetailMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['user_has_upvoted'] = self.object.user_has_upvoted(self.request.user)
+        context['release'] = self.object.get_release()
         return context
 
 

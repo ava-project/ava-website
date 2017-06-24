@@ -38,12 +38,26 @@ class PluginArchiveField(forms.FileField):
         except avasdk.exceptions.ValidationError as e:
             raise ValidationError('Error in manifest.json ({})'.format(e))
 
+    def get_readme(self, archive):
+        try:
+            with ZipFile(archive.temporary_file_path()) as plugin:
+                prefix = self.get_prefix(plugin)
+                with plugin.open('{}/README.md'.format(prefix)) as myfile:
+                    readme = myfile.read()
+                return readme.decode('utf8')
+        except FileNotFoundError:
+            raise ValidationError('Error with upload, please try again')
+        except KeyError:
+            return None
+
     def clean(self, data, initial=None):
         f = super().clean(data, initial)
         manifest = self.get_manifest(f)
+        readme = self.get_readme(f)
         return {
             'zipfile': f,
-            'manifest': manifest
+            'manifest': manifest,
+            'readme': readme,
         }
 
 
