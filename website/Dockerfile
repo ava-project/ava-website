@@ -8,12 +8,12 @@ RUN apk update \
   && apk add --virtual build-deps gcc python3-dev musl-dev \
   && apk add postgresql-dev \
   && pip install -r requirements.txt\
+  && curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash\
   && apk del build-deps gcc musl-dev python3-dev
 
 ADD . /app
 
 ENV PYTHONUNBUFFERED 1
 
-VOLUME /data
 
 CMD ./entrypoints/dev.sh
