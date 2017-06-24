@@ -3,6 +3,8 @@ from django.db.models import F
 from django.shortcuts import redirect
 from django.views.generic import FormView, DetailView, ListView, View
 
+from markdown import markdown as compiler_markdown
+
 from . import forms, mixins
 from .models import Plugin, PluginCommand, Release, Upvote
 
@@ -28,6 +30,9 @@ class UploadPluginView(FormView):
             version=nb_release,
             description=data_plugin['manifest'].get('description', ''),
             archive=data_plugin['zipfile'])
+        if data_plugin['readme']:
+            release.readme = data_plugin['readme']
+            release.readme_html = compiler_markdown(data_plugin['readme'], extensions=['markdown.extensions.tables'])
         release.save()
         if 'tags' in data_plugin['manifest']:
             release.tags.add(*data_plugin['manifest']['tags'])

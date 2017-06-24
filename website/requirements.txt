@@ -1,3 +1,4 @@
+avasdk==0.2.0
 Django==1.11
 django-contrib-comments==1.8.0
 django-debug-toolbar==1.8
@@ -6,11 +7,11 @@ django-model-utils==2.6.1
 django-nose==1.4.4
 django-pipeline==1.6.13
 django-taggit==0.22.1
-mock==2.0.0
-pytz==2017.2
-avasdk==0.2.0
 docutils==0.13.1
 gunicorn==19.7.1
+markdown==2.6.8
+mock==2.0.0
 psycopg2==2.7.1
 pyinotify==0.9.6
+pytz==2017.2
 raven==6.0.0

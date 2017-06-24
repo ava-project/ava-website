@@ -20,6 +20,9 @@
       {% endif %}
     {% endif %}
   </p>
+  <div>
+    {{ release.readme_html|safe }}
+  </div>
   <h3>List of releases :</h3>
   <ul>
     {% for release in object.release_set.all %}

@@ -42,6 +42,8 @@ class Release(TimeStampedModel, models.Model):
     version = models.IntegerField(default=0)
     archive = models.FileField(upload_to=plugin_directory_path)
     description = models.TextField(default='')
+    readme = models.TextField(default='')
+    readme_html = models.TextField(default='')
     tags = TaggableManager()
 
 
