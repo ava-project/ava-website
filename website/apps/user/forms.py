@@ -2,18 +2,21 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth import password_validation
 
-from .validators import UsernameValidator, emailUniqueValidator
+from . import validators
 
 
 class RegisterForm(forms.ModelForm):
     email = forms.CharField(
         max_length=75,
-        validators=[emailUniqueValidator],
+        validators=[validators.emailUniqueValidator],
         required=True
     )
     username = forms.CharField(
         max_length=75,
-        validators=[UsernameValidator()],
+        validators=[
+            validators.UsernameValidator(),
+            validators.blacklistUsername,
+        ],
         required=True
     )
     password = forms.CharField(

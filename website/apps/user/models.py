@@ -13,6 +13,13 @@ from core.utils import send_email
 from main.utils import generate_token
 
 
+class ForbiddenUsername(models.Model):
+    """
+    List of username that can't be taken
+    """
+    username = models.CharField(max_length=50, unique=True)
+
+
 class Device(Expirationable, TimeStampedModel, models.Model):
     """
     Represent a Daemon using the JSON API
