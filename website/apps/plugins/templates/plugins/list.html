@@ -14,7 +14,7 @@
         <a href="{{ plugin.url }}">{{ plugin.name }}</a>
         <p>{{ plugin.last_release.description }}</p>
         <span>{{ plugin.nb_upvote }} Upvotes</span>
-        <p>by {{ plugin.author.username }}</p>
+        <p>by <a href="{{ plugin.author.profile_url }}">{{ plugin.author.username }}</a></p>
       </div>
       <hr />
     {% endfor %}

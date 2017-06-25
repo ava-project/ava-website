@@ -1,17 +1,14 @@
 {% extends "layout/main.html" %}
 
 {% block content %}
-    {% if user.profile.validated %}
-        <h4>Welcome {{ user.first_name }}</h4>
-        <a href="{% url 'user:edit-profile' %}">Edit my profile</a>
-        <h4>Your plugins</h4>
-        <ul>
-          {% for plugin in user.plugin_set.all %}
-            <li><a href="{{ plugin.url }}">{{ plugin.name }}</a></li>
-          {% endfor %}
-        </ul>
-    {% else %}
-        <p>Please activate your account with the email.</p>
-        <a href="{% url 'user:resend-validation-email' %}">Send another email</a>
-    {% endif %}
+  <h4>{{ object.username }}</h4>
+  {% if object == request.user %}
+    <a href="{% url 'user:edit-profile' %}">Edit my profile</a>
+  {% endif %}
+  <h4>Plugins</h4>
+  <ul>
+    {% for plugin in object.plugin_set.all %}
+      <li><a href="{{ plugin.url }}">{{ plugin.name }}</a></li>
+    {% endfor %}
+  </ul>
 {% endblock %}

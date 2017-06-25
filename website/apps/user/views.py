@@ -6,18 +6,15 @@ List of classes:
 - ProfileEditView
 - ValidateTokenEmailView
 - ResendValidationEmailView
-- RemoteLoginView
-- RemoteInfoUserView
-- RemoteLogoutView
 """
 
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.http import HttpResponseBadRequest
-from django.shortcuts import redirect
-from django.urls import reverse_lazy
+from django.shortcuts import redirect, get_object_or_404
+from django.urls import reverse
 from django.views.generic.edit import FormView, UpdateView
-from django.views.generic import TemplateView, View
+from django.views.generic import DetailView, TemplateView, View
 
 from . import forms
 from .mixins import LoginMixin
@@ -50,22 +47,26 @@ class RegisterView(LoginMixin, FormView):
         return redirect('main:index')
 
 
-class ProfileView(TemplateView):
+class ProfileView(DetailView):
     """
     This endpoint allows one to see his profile.
     """
-
     template_name = "user/profile.html"
+    model = User
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(User, username=self.kwargs['username'])
 
 
 class ProfileEditView(UpdateView):
     """
     This endpoint allows user to edit his profile.
     """
-
     template_name = "user/edit-profile.html"
     form_class = forms.EditProfileForm
-    success_url = reverse_lazy('user:profile')
+
+    def get_success_url(self):
+        return self.request.user.profile_url()
 
     def get_object(self, queryset=None):
         """Return the current user."""
@@ -110,4 +111,10 @@ class ResendValidationEmailView(View):
         user = request.user
         if not user.profile.validated:
             EmailValidationToken.create_and_send_validation_email(user, request)
-        return redirect('user:profile')
+        return user.profile_url()
+
+
+def profile_url(self):
+    return reverse('user:profile', args=[self.username])
+
+User.add_to_class('profile_url', profile_url)

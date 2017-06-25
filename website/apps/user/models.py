@@ -83,6 +83,5 @@ def after_user_save(sender, **kwargs):
     Signal to create a profile model when a User is created
     """
     if kwargs['created']:
-        user = kwargs['instance']
-        profile = Profile(user=user, email_await_validation=user.email)
-        profile.save()
+        Profile(user=kwargs['instance'],
+            email_await_validation=user.email).save()

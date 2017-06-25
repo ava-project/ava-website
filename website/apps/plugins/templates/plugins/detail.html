@@ -5,6 +5,7 @@
 {% block content %}
   <a href="{% url "plugins:list" %}">Back to plugin list</a>
   <h1>Plugin detail : {{ object.name }}</h1>
+  <p>by <a href="{{ plugin.author.profile_url }}">{{ plugin.author.username }}</a></p>
   <p>
     {{ release.description }}
   </p>

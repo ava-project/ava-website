@@ -45,9 +45,6 @@ urlpatterns = [
         name='password_reset_complete'),
 
     # profile
-    url(r'^profile/?$',
-        login_required(views.ProfileView.as_view()),
-        name='profile'),
     url(r'^profile/edit/?$',
         login_required(views.ProfileEditView.as_view()),
         name='edit-profile'),
@@ -83,4 +80,8 @@ urlpatterns = [
     url(r'^logout.json/?$',
         remote_login_required(views_remote.RemoteLogoutView.as_view()),
         name='logout-json'),
+
+    url(r'^(?P<username>[a-zA-Z0-9-]+)/?$',
+        views.ProfileView.as_view(),
+        name='profile'),
 ]
