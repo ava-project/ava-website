@@ -1,11 +1,12 @@
 avasdk==0.2.0
-Django==1.11
+django==1.11.2
 django-contrib-comments==1.8.0
 django-debug-toolbar==1.8
 django-mail-templated==2.6.5
 django-model-utils==2.6.1
 django-nose==1.4.4
 django-pipeline==1.6.13
+django-stdimage==2.4.1
 django-taggit==0.22.1
 docutils==0.13.1
 gunicorn==19.7.1
