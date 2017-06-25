@@ -18,7 +18,7 @@ def reverse_func(apps, schema_editor):
     OperatingSystem = apps.get_model("main", "OperatingSystem")
     db_alias = schema_editor.connection.alias
     for os in fixture_os:
-        Country.objects.using(db_alias).filter(name=os).delete()
+        OperatingSystem.objects.using(db_alias).filter(name=os).delete()
 
 
 class Migration(migrations.Migration):
