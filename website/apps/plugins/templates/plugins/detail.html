@@ -5,6 +5,7 @@
 {% block content %}
   <a href="{% url "plugins:list" %}">Back to plugin list</a>
   <h1>Plugin detail : {{ object.name }}</h1>
+  <p>by <a href="{{ plugin.author.profile_url }}">{{ plugin.author.username }}</a></p>
   <p>
     {{ release.description }}
   </p>
@@ -26,7 +27,7 @@
   <h3>List of releases :</h3>
   <ul>
     {% for release in object.release_set.all %}
-      <li>{{ release.version }}</li>
+      <li><a href="?version={{ release.version }}">{{ release.version }}</a></li>
     {% endfor %}
   </ul>
   <h3>Tags:</h3>

@@ -14,6 +14,9 @@ class Plugin(TimeStampedModel, models.Model):
     nb_download = models.IntegerField(default=0)
     nb_upvote = models.IntegerField(default=0)
 
+    class Meta(object):
+        ordering = ['nb_upvote', 'nb_download']
+
     @property
     def url(self):
         return reverse('plugins:detail', args=[self.author.username, self.name])
@@ -22,8 +25,14 @@ class Plugin(TimeStampedModel, models.Model):
     def url_download(self):
         return reverse('plugins:download', args=[self.author.username, self.name])
 
-    def get_release(self, version=None):
+    @property
+    def last_release(self):
         return self.release_set.order_by('-created').first()
+
+    def get_release(self, version=None):
+        if version:
+            return self.release_set.filter(version=version).first()
+        return self.last_release
 
     def user_has_upvoted(self, user):
         if not user.is_authenticated():
