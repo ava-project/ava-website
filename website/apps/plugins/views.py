@@ -1,5 +1,6 @@
 from django.db import transaction
 from django.db.models import F
+from django.http import Http404
 from django.shortcuts import redirect
 from django.views.generic import FormView, DetailView, ListView, View
 
@@ -57,10 +58,15 @@ class PluginListView(ListView):
 class PluginDetailView(mixins.PluginDetailMixin, DetailView):
     template_name = 'plugins/detail.html'
 
+    def get_release(self):
+        return self.object.get_release(self.request.GET.get('version', None))
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['user_has_upvoted'] = self.object.user_has_upvoted(self.request.user)
-        context['release'] = self.object.get_release()
+        context['release'] = self.get_release()
+        if not context['release']:
+            raise Http404('Can\'t find this version')
         return context
 
 

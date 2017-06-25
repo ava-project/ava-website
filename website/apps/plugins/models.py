@@ -23,7 +23,11 @@ class Plugin(TimeStampedModel, models.Model):
         return reverse('plugins:download', args=[self.author.username, self.name])
 
     def get_release(self, version=None):
-        return self.release_set.order_by('-created').first()
+        queryset = self.release_set
+        if version:
+            return queryset.filter(version=version).first()
+        else:
+            return queryset.order_by('-created').first()
 
     def user_has_upvoted(self, user):
         if not user.is_authenticated():

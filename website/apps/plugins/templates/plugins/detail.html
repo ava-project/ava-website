@@ -26,7 +26,7 @@
   <h3>List of releases :</h3>
   <ul>
     {% for release in object.release_set.all %}
-      <li>{{ release.version }}</li>
+      <li><a href="?version={{ release.version }}">{{ release.version }}</a></li>
     {% endfor %}
   </ul>
   <h3>Tags:</h3>
