@@ -111,7 +111,7 @@ class ResendValidationEmailView(View):
         user = request.user
         if not user.profile.validated:
             EmailValidationToken.create_and_send_validation_email(user, request)
-        return user.profile_url()
+        return redirect(user.profile_url())
 
 
 def profile_url(self):

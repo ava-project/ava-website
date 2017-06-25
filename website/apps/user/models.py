@@ -84,4 +84,4 @@ def after_user_save(sender, **kwargs):
     """
     if kwargs['created']:
         Profile(user=kwargs['instance'],
-            email_await_validation=user.email).save()
+            email_await_validation=kwargs['instance'].email).save()
