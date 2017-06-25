@@ -14,6 +14,9 @@ class Plugin(TimeStampedModel, models.Model):
     nb_download = models.IntegerField(default=0)
     nb_upvote = models.IntegerField(default=0)
 
+    class Meta(object):
+        ordering = ['nb_upvote', 'nb_download']
+
     @property
     def url(self):
         return reverse('plugins:detail', args=[self.author.username, self.name])
