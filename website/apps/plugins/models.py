@@ -22,12 +22,14 @@ class Plugin(TimeStampedModel, models.Model):
     def url_download(self):
         return reverse('plugins:download', args=[self.author.username, self.name])
 
+    @property
+    def last_release(self):
+        return self.release_set.order_by('-created').first()
+
     def get_release(self, version=None):
-        queryset = self.release_set
         if version:
-            return queryset.filter(version=version).first()
-        else:
-            return queryset.order_by('-created').first()
+            return self.release_set.filter(version=version).first()
+        return self.last_release
 
     def user_has_upvoted(self, user):
         if not user.is_authenticated():
