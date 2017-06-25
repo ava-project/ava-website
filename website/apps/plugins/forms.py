@@ -44,7 +44,7 @@ class PluginArchiveField(forms.FileField):
                 prefix = self.get_prefix(plugin)
                 with plugin.open('{}/README.md'.format(prefix)) as myfile:
                     readme = myfile.read()
-                return readme.decode('utf8')
+                return readme
         except FileNotFoundError:
             raise ValidationError('Error with upload, please try again')
         except KeyError:

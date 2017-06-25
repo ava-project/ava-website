@@ -1,6 +1,10 @@
+import json
+from zipfile import ZipFile
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
+from markdown import markdown as compiler_markdown
 from model_utils.models import TimeStampedModel
 from taggit.managers import TaggableManager
 
@@ -54,6 +58,62 @@ class Release(TimeStampedModel, models.Model):
     readme = models.TextField(default='')
     readme_html = models.TextField(default='')
     tags = TaggableManager()
+
+    def __str__(self):
+        return 'Release {} of {}/{}'.format(self.version,
+            self.plugin.author.username, self.plugin.name)
+
+    class Meta(object):
+        ordering = ['version']
+
+    def set_readme(self, markdown):
+        """
+        Set the readme of the release.
+        parameters in str
+        Compile the markdown to html
+        """
+        self.readme = markdown.decode('utf8')
+        self.readme_html = compiler_markdown(self.readme,
+            extensions=['markdown.extensions.tables'])
+
+    def add_tags(self, tags):
+        """
+        Add tags to the release
+        tags is an array of tags
+        """
+        self.tags.add(*tags)
+
+    def add_commands(self, commands):
+        """
+        Add commands to the release from the manifest file
+        """
+        self.plugincommand_set.all().delete()
+        for command in commands:
+            PluginCommand(
+                release=self,
+                plugin=self.plugin,
+                name=command['name'],
+                description=command.get('description', ''),
+            ).save()
+
+    def get_manifest_from_archive(self):
+        self.archive.open()
+        with ZipFile(self.archive) as archive:
+            with archive.open('{}/manifest.json'.format(self.plugin.name)) as myfile:
+                manifest = json.loads(myfile.read())
+        self.archive.close()
+        return manifest
+
+    def get_readme_from_archive(self):
+        self.archive.open()
+        with ZipFile(self.archive) as archive:
+            try:
+                with archive.open('{}/README.md'.format(self.plugin.name)) as myfile:
+                    readme = myfile.read()
+            except KeyError:
+                readme = None
+        self.archive.close()
+        return readme
 
 
 class PluginCommand(models.Model):
