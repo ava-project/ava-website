@@ -1,4 +1,3 @@
-import os
 import json
 from zipfile import ZipFile
 
@@ -66,7 +65,6 @@ class Release(TimeStampedModel, models.Model):
 
     class Meta(object):
         ordering = ['version']
-
 
     def set_readme(self, markdown):
         """
