@@ -10,6 +10,7 @@ INSTALLED_APPS = [
     'mail_templated',
     'django_comments',
     # 'pipeline',
+    'stdimage',
     'taggit',
 
     'main',

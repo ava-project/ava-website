@@ -1,0 +1,17 @@
+{% extends "layout/main.html" %}
+
+{% block content %}
+<h1>Download AVA</h1>
+
+{% for os in object_list %}
+  {{ os.name }}
+  {% for release in os.coreinstaller_set.all %}
+    <div>
+      {{ release.version }} -
+      <a href="{% url 'main:download-release' pk=release.pk %}">Download</a>
+    </div>
+  {% endfor %}
+  <hr />
+{% endfor %}
+
+{% endblock %}
