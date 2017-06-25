@@ -4,10 +4,8 @@ from django.http import Http404
 from django.shortcuts import redirect
 from django.views.generic import FormView, DetailView, ListView, View
 
-from markdown import markdown as compiler_markdown
-
 from . import forms, mixins
-from .models import Plugin, PluginCommand, Release, Upvote
+from .models import Plugin, Release, Upvote
 
 
 class UploadPluginView(FormView):
@@ -32,18 +30,11 @@ class UploadPluginView(FormView):
             description=data_plugin['manifest'].get('description', ''),
             archive=data_plugin['zipfile'])
         if data_plugin['readme']:
-            release.readme = data_plugin['readme']
-            release.readme_html = compiler_markdown(data_plugin['readme'], extensions=['markdown.extensions.tables'])
+            release.set_readme(data_plugin['readme'])
         release.save()
         if 'tags' in data_plugin['manifest']:
-            release.tags.add(*data_plugin['manifest']['tags'])
-        for command in data_plugin['manifest'].get('commands', []):
-            PluginCommand(
-                release=release,
-                plugin=self.plugin,
-                name=command['name'],
-                description=command['description'],
-            ).save()
+            release.add_tags(data_plugin['manifest']['tags'])
+        release.add_commands(data_plugin['manifest'].get('commands', []))
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -62,6 +53,7 @@ class PluginListView(ListView):
         query = Q(name__icontains=search)
         query |= Q(author__username__startswith=search)
         return self.model.objects.filter(query)
+
 
 class PluginDetailView(mixins.PluginDetailMixin, DetailView):
     template_name = 'plugins/detail.html'
