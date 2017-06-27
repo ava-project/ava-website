@@ -9,6 +9,8 @@ List of classes:
 """
 
 from django.contrib.auth.models import User
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.db import transaction
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect, get_object_or_404
@@ -21,13 +23,14 @@ from .mixins import LoginMixin
 from .models import EmailValidationToken
 
 
-class RegisterView(LoginMixin, FormView):
+class RegisterView(LoginMixin, SuccessMessageMixin, FormView):
     """
     This endpoint is a generic form view for the user registration.
     """
 
     template_name = "user/register.html"
     form_class = forms.RegisterForm
+    success_message = 'Account created, welcome to the team !'
 
     @transaction.atomic
     def form_valid(self, form):
@@ -64,6 +67,7 @@ class ProfileEditView(UpdateView):
     """
     template_name = "user/edit-profile.html"
     form_class = forms.EditProfileForm
+    success_message = 'Profile updated'
 
     def get_success_url(self):
         return self.request.user.profile_url()
@@ -94,6 +98,7 @@ class ValidateTokenEmailView(LoginMixin, View):
             token.consume()
             if not request.user.is_authenticated:
                 self.login_user(token.user)
+            messages.success(request, 'Email validated')
             return redirect('main:index')
         except (EmailValidationToken.DoesNotExist, ValueError) as e:
             print(e)
@@ -111,6 +116,7 @@ class ResendValidationEmailView(View):
         user = request.user
         if not user.profile.validated:
             EmailValidationToken.create_and_send_validation_email(user, request)
+            messages.success(request, 'Validation email resent')
         return redirect(user.profile_url())
 
 

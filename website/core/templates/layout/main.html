@@ -1,10 +1,11 @@
 <!Doctype html>
 <html>
-    <head>
-        <title>AVA project</title>
-    </head>
-    <body>
-        {% include "include/menu.html" %}
-        {% block content %}{% endblock %}
-    </body>
+  <head>
+    <title>AVA project</title>
+  </head>
+  <body>
+    {% include "include/menu.html" %}
+    {% block content %}{% endblock %}
+    {% include "include/messages.html" %}
+  </body>
 </html>
