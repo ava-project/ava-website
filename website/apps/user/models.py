@@ -77,6 +77,12 @@ class EmailValidationToken(Expirationable, TimeStampedModel, models.Model):
             url_validation=token.generate_validation_url(request))
 
 
+def profile_url(self):
+    return reverse('user:profile', args=[self.username])
+
+User.add_to_class('profile_url', profile_url)
+
+
 @receiver(post_save, sender=User)
 def after_user_save(sender, **kwargs):
     """

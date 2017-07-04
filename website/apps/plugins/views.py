@@ -1,5 +1,7 @@
 from django.db import transaction
 from django.db.models import F, Q
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.http import Http404
 from django.shortcuts import redirect
 from django.views.generic import FormView, DetailView, ListView, View
@@ -8,9 +10,10 @@ from . import forms, mixins
 from .models import Plugin, Release, Upvote
 
 
-class UploadPluginView(FormView):
+class UploadPluginView(SuccessMessageMixin, FormView):
     template_name = 'plugins/upload.html'
     form_class = forms.UploadPluginForm
+    success_message = 'Plugin uploaded successfully'
 
     def get_plugin(self, name):
         try:
@@ -26,6 +29,7 @@ class UploadPluginView(FormView):
         nb_release = Release.objects.filter(plugin=self.plugin).count() + 1
         release = Release(
             plugin=self.plugin,
+            checksum=data_plugin['checksum'],
             version=nb_release,
             description=data_plugin['manifest'].get('description', ''),
             archive=data_plugin['zipfile'])
@@ -47,12 +51,13 @@ class PluginListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        search = self.request.GET.get('search', None)
-        if not search:
-            return super().get_queryset()
-        query = Q(name__icontains=search)
-        query |= Q(author__username__startswith=search)
-        return self.model.objects.filter(query)
+        queryset = super().get_queryset()
+        search_on_text = self.request.GET.get('search', None)
+        if not search_on_text:
+            return queryset
+        search = Q(name__icontains=search_on_text)
+        search |= Q(author__username__startswith=search_on_text)
+        return queryset.filter(search)
 
 
 class PluginDetailView(mixins.PluginDetailMixin, DetailView):
@@ -80,6 +85,7 @@ class PluginUpvoteView(mixins.PluginDetailMixin, View):
             Upvote.objects.create(**params)
             plugin.nb_upvote = F('nb_upvote') + 1
             plugin.save(update_fields=['nb_upvote'])
+            messages.success(request, 'Upvote sent')
         return redirect(plugin.url)
 
 
@@ -91,4 +97,5 @@ class PluginDownvoteView(mixins.PluginDetailMixin, View):
         if Upvote.objects.filter(user=request.user, plugin=plugin).delete()[0] == 1:
             plugin.nb_upvote = F('nb_upvote') - 1
             plugin.save(update_fields=['nb_upvote'])
+            messages.success(request, 'Upvote removed')
         return redirect(plugin.url)

@@ -1,6 +1,3 @@
-import json
-from zipfile import ZipFile
-
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
@@ -58,13 +55,14 @@ class Release(TimeStampedModel, models.Model):
     readme = models.TextField(default='')
     readme_html = models.TextField(default='')
     tags = TaggableManager()
+    checksum = models.CharField(max_length=64, default='')
 
     def __str__(self):
         return 'Release {} of {}/{}'.format(self.version,
             self.plugin.author.username, self.plugin.name)
 
     class Meta(object):
-        ordering = ['version']
+        ordering = ['-version']
 
     def set_readme(self, markdown):
         """
@@ -95,25 +93,6 @@ class Release(TimeStampedModel, models.Model):
                 name=command['name'],
                 description=command.get('description', ''),
             ).save()
-
-    def get_manifest_from_archive(self):
-        self.archive.open()
-        with ZipFile(self.archive) as archive:
-            with archive.open('{}/manifest.json'.format(self.plugin.name)) as myfile:
-                manifest = json.loads(myfile.read())
-        self.archive.close()
-        return manifest
-
-    def get_readme_from_archive(self):
-        self.archive.open()
-        with ZipFile(self.archive) as archive:
-            try:
-                with archive.open('{}/README.md'.format(self.plugin.name)) as myfile:
-                    readme = myfile.read()
-            except KeyError:
-                readme = None
-        self.archive.close()
-        return readme
 
 
 class PluginCommand(models.Model):

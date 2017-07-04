@@ -41,6 +41,7 @@ class PluginDownloadView(mixins.PluginDetailMixin, View):
         download.save()
         return JsonResponse({
             'url': download.url,
+            'checksum': release.checksum,
             'version': release.version,
         })
 

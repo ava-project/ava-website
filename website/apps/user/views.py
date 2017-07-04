@@ -8,11 +8,13 @@ List of classes:
 - ResendValidationEmailView
 """
 
+from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth import views as django_auth_views
+from django.contrib.messages.views import SuccessMessageMixin
 from django.db import transaction
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect, get_object_or_404
-from django.urls import reverse
 from django.views.generic.edit import FormView, UpdateView
 from django.views.generic import DetailView, TemplateView, View
 
@@ -21,13 +23,14 @@ from .mixins import LoginMixin
 from .models import EmailValidationToken
 
 
-class RegisterView(LoginMixin, FormView):
+class RegisterView(LoginMixin, SuccessMessageMixin, FormView):
     """
     This endpoint is a generic form view for the user registration.
     """
 
     template_name = "user/register.html"
     form_class = forms.RegisterForm
+    success_message = 'Account created, welcome to the team !'
 
     @transaction.atomic
     def form_valid(self, form):
@@ -47,6 +50,11 @@ class RegisterView(LoginMixin, FormView):
         return redirect('main:index')
 
 
+class LoginView(SuccessMessageMixin, django_auth_views.LoginView):
+    template_name = 'user/login.html'
+    success_message = 'Welcome back !'
+
+
 class ProfileView(DetailView):
     """
     This endpoint allows one to see his profile.
@@ -64,6 +72,7 @@ class ProfileEditView(UpdateView):
     """
     template_name = "user/edit-profile.html"
     form_class = forms.EditProfileForm
+    success_message = 'Profile updated'
 
     def get_success_url(self):
         return self.request.user.profile_url()
@@ -94,6 +103,7 @@ class ValidateTokenEmailView(LoginMixin, View):
             token.consume()
             if not request.user.is_authenticated:
                 self.login_user(token.user)
+            messages.success(request, 'Email validated')
             return redirect('main:index')
         except (EmailValidationToken.DoesNotExist, ValueError) as e:
             print(e)
@@ -102,7 +112,6 @@ class ValidateTokenEmailView(LoginMixin, View):
 
 class ResendValidationEmailView(View):
     """
-
     This endpoint sends another email to validate the account
     of one person who didn't validated
     """
@@ -111,10 +120,5 @@ class ResendValidationEmailView(View):
         user = request.user
         if not user.profile.validated:
             EmailValidationToken.create_and_send_validation_email(user, request)
+            messages.success(request, 'Validation email resent')
         return redirect(user.profile_url())
-
-
-def profile_url(self):
-    return reverse('user:profile', args=[self.username])
-
-User.add_to_class('profile_url', profile_url)
