@@ -5,6 +5,7 @@ import avasdk
 from zipfile import ZipFile, BadZipFile
 
 from avasdk.plugins import validate_manifest
+from avasdk.plugins.hasher import hash_plugin
 from django import forms
 from django.core.validators import ValidationError
 
@@ -58,6 +59,7 @@ class PluginArchiveField(forms.FileField):
             'zipfile': f,
             'manifest': manifest,
             'readme': readme,
+            'checksum': hash_plugin(f.temporary_file_path()),
         }
 
 

@@ -107,7 +107,6 @@ class ValidateTokenEmailView(LoginMixin, View):
 
 class ResendValidationEmailView(View):
     """
-
     This endpoint sends another email to validate the account
     of one person who didn't validated
     """

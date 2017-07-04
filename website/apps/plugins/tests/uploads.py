@@ -7,6 +7,7 @@ from django.urls import reverse
 url = reverse('plugins:upload')
 base_path = os.path.dirname(os.path.realpath(__file__)) + '/assets'
 
+good_plugin_hash = 'c48afac6604666fa0983fee4d85d893834963fb65bab5858ae7071550e9025a5'
 
 def open_file(name):
     return open('{}/{}'.format(base_path, name), 'rb')

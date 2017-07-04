@@ -5,6 +5,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import Http404
 from django.shortcuts import redirect
 from django.views.generic import FormView, DetailView, ListView, View
+
 from . import forms, mixins
 from .models import Plugin, Release, Upvote
 
@@ -28,6 +29,7 @@ class UploadPluginView(SuccessMessageMixin, FormView):
         nb_release = Release.objects.filter(plugin=self.plugin).count() + 1
         release = Release(
             plugin=self.plugin,
+            checksum=data_plugin['checksum'],
             version=nb_release,
             description=data_plugin['manifest'].get('description', ''),
             archive=data_plugin['zipfile'])
