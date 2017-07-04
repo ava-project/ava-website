@@ -15,7 +15,6 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.db import transaction
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect, get_object_or_404
-from django.urls import reverse
 from django.views.generic.edit import FormView, UpdateView
 from django.views.generic import DetailView, TemplateView, View
 

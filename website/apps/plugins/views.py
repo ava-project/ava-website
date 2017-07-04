@@ -52,11 +52,11 @@ class PluginListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        q = self.request.GET.get('search', None)
-        if not q:
+        search_on_text = self.request.GET.get('search', None)
+        if not search_on_text:
             return queryset
-        search = Q(name__icontains=q)
-        search |= Q(author__username__startswith=q)
+        search = Q(name__icontains=search_on_text)
+        search |= Q(author__username__startswith=search_on_text)
         return queryset.filter(search)
 
 
