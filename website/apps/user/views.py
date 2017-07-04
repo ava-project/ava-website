@@ -8,8 +8,9 @@ List of classes:
 - ResendValidationEmailView
 """
 
-from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth.models import User
+from django.contrib.auth import views as django_auth_views
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db import transaction
 from django.http import HttpResponseBadRequest
@@ -48,6 +49,11 @@ class RegisterView(LoginMixin, SuccessMessageMixin, FormView):
         EmailValidationToken.create_and_send_validation_email(user, self.request)
         self.login_user(user)
         return redirect('main:index')
+
+
+class LoginView(SuccessMessageMixin, django_auth_views.LoginView):
+    template_name = 'user/login.html'
+    success_message = 'Welcome back !'
 
 
 class ProfileView(DetailView):
@@ -117,9 +123,3 @@ class ResendValidationEmailView(View):
             EmailValidationToken.create_and_send_validation_email(user, request)
             messages.success(request, 'Validation email resent')
         return redirect(user.profile_url())
-
-
-def profile_url(self):
-    return reverse('user:profile', args=[self.username])
-
-User.add_to_class('profile_url', profile_url)

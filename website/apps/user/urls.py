@@ -14,15 +14,11 @@ urlpatterns = [
         views.RegisterView.as_view(),
         name='register'),
     url(r'^login/?$',
-        django_auth_views.login,
-        name='login',
-        kwargs={
-            'template_name': 'user/login.html'
-        }),
+        views.LoginView.as_view(),
+        name='login'),
     url(r'^logout/?$',
         django_auth_views.logout,
         name='logout'),
-
     # password reset
     url(r'^reset-password/?$',
         django_auth_views.password_reset,
