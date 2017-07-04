@@ -1,3 +1,16 @@
 {
-	"name": "good-plugin"
+  "name":"ssh",
+  "description": "SSH plugin for AVA",
+  "version": "0.0.1",
+  "author": "tommy",
+  "commands": [
+    {
+      "name": "connect",
+      "phonetic": "CO NE KT",
+      "exec": "ssh.py",
+      "description": "command to log to my own server"
+    }
+  ],
+  "tags": ["ssh", "python"],
+  "build": false
 }
