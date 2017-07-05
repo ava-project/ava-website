@@ -4,7 +4,7 @@
   <h1>Plugins list</h1>
   <form method="get" action="">
     <label for="search_input">Search :</label>
-    <input value="{{ request.GET.search }}" type="text" name="search" id="search_input" />
+    <input value="{{ search_string }}" type="text" name="search" id="search_input" />
     <input type="submit" />
   </form>
   <hr />
@@ -17,6 +17,8 @@
         <p>by <a href="{{ plugin.author.profile_url }}">{{ plugin.author.username }}</a></p>
       </div>
       <hr />
+    {% empty %}
+      <p>No result</p>
     {% endfor %}
   </div>
 
