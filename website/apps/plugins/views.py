@@ -50,6 +50,10 @@ class PluginListView(ListView):
     template_name = 'plugins/list.html'
     paginate_by = 10
 
+    def get_context_data(self, **kwargs):
+        kwargs['search_string'] = self.request.GET.get('search', '')
+        return super().get_context_data(**kwargs)
+
     def get_queryset(self):
         queryset = super().get_queryset()
         search_on_text = self.request.GET.get('search', None)
