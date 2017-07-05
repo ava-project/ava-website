@@ -121,6 +121,7 @@ class DownloadRelease(Expirationable, TimeStampedModel, models.Model):
 class UserPlugins(TimeStampedModel, models.Model):
     plugin = models.ForeignKey(Plugin, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    release = models.ForeignKey(Release, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         unique_together = ('plugin', 'user')

@@ -48,8 +48,8 @@ class PluginDownloadView(mixins.PluginDetailMixin, View):
 
 class PluginDownloadLinkView(View):
 
-    def add_download(self, plugin, user):
-        params = {'user': user, 'plugin': plugin}
+    def add_download(self, plugin, user, release):
+        params = {'user': user, 'plugin': plugin, 'release': release}
         if UserPlugins.objects.filter(**params).count() == 0:
             UserPlugins.objects.create(**params)
 
@@ -64,7 +64,7 @@ class PluginDownloadLinkView(View):
         download.save()
         download.plugin.nb_download = F('nb_download') + 1
         download.plugin.save(update_fields=['nb_download'])
-        self.add_download(download.plugin, request.user)
+        self.add_download(download.plugin, request.user, download.release)
         archive = download.release.archive
         response = HttpResponse(archive.read(), content_type='application/octet-stream')
         response['Content-Disposition'] = 'inline; filename=' + archive.name
@@ -79,9 +79,11 @@ class MyPluginListView(View):
     def generate_plugin_data(self, plugin):
         username = plugin.plugin.author.username
         name = plugin.plugin.name
+        release = plugin.release if plugin.release else plugin.plugin.last_release
         return {
             'author': username,
             'name': name,
+            'version': release.version,
             'url': reverse('plugins:download', args=(username, name)),
         }
 
