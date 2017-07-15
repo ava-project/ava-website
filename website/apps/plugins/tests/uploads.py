@@ -18,6 +18,8 @@ class UploadPluginTests(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user('username', 'email@email.fr', 'password')
+        self.user.profile.validated = True
+        self.user.profile.save()
         self.client.force_login(self.user)
 
     def test_no_input(self):
