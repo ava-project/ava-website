@@ -20,7 +20,6 @@ class DownloadPluginTests(TestCase):
         self.client.force_login(self.user)
         with open_file('good_plugin.zip') as plugin:
             resp = self.client.post(url_upload, {'archive': plugin})
-            print(resp)
 
     def test_generate_url(self):
         plugin = Plugin.objects.first()

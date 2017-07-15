@@ -1,16 +1,20 @@
 {
-  "name":"ssh",
-  "description": "SSH plugin for AVA",
+  "name":"what",
+  "description": "Datetime plugin",
   "version": "0.0.1",
   "author": "tommy",
+  "source": "what.py",
   "commands": [
     {
-      "name": "connect",
-      "phonetic": "CO NE KT",
-      "exec": "ssh.py",
-      "description": "command to log to my own server"
+      "name": "time",
+      "phonetic": "T I ME",
+      "description": "Returns the current time"
+    },
+    {
+      "name": "date",
+      "phonetic": "D ATE",
+      "description": "Returns the current date"
     }
   ],
-  "tags": ["ssh", "python"],
-  "build": false
+  "tags": ["time", "date", "python"]
 }
