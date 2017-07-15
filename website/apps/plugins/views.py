@@ -6,11 +6,12 @@ from django.http import Http404
 from django.shortcuts import redirect
 from django.views.generic import FormView, DetailView, ListView, View
 
+from user.mixins import UserMustBeValidated
 from . import forms, mixins
 from .models import Plugin, Release, Upvote
 
 
-class UploadPluginView(SuccessMessageMixin, FormView):
+class UploadPluginView(UserMustBeValidated, SuccessMessageMixin, FormView):
     template_name = 'plugins/upload.html'
     form_class = forms.UploadPluginForm
     success_message = 'Plugin uploaded successfully'
@@ -79,7 +80,7 @@ class PluginDetailView(mixins.PluginDetailMixin, DetailView):
         return context
 
 
-class PluginUpvoteView(mixins.PluginDetailMixin, View):
+class PluginUpvoteView(UserMustBeValidated, mixins.PluginDetailMixin, View):
 
     @transaction.atomic
     def get(self, request, *args, **kwargs):
@@ -93,7 +94,7 @@ class PluginUpvoteView(mixins.PluginDetailMixin, View):
         return redirect(plugin.url)
 
 
-class PluginDownvoteView(mixins.PluginDetailMixin, View):
+class PluginDownvoteView(UserMustBeValidated, mixins.PluginDetailMixin, View):
 
     @transaction.atomic
     def get(self, request, *args, **kwargs):
