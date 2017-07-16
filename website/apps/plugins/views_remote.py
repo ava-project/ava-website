@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import View
 from django.urls import reverse
 
+from user.mixins import JsonUserMustBeValidated
 from . import mixins
 from .models import Release, DownloadRelease, UserPlugins
 
@@ -22,7 +23,7 @@ class PluginDetailView(mixins.PluginDetailMixin, View):
         })
 
 
-class PluginDownloadView(mixins.PluginDetailMixin, View):
+class PluginDownloadView(JsonUserMustBeValidated, mixins.PluginDetailMixin, View):
 
     def get_release(self, plugin):
         if 'version' not in self.kwargs:
@@ -49,9 +50,18 @@ class PluginDownloadView(mixins.PluginDetailMixin, View):
 class PluginDownloadLinkView(View):
 
     def add_download(self, plugin, user, release):
-        params = {'user': user, 'plugin': plugin, 'release': release}
-        if UserPlugins.objects.filter(**params).count() == 0:
-            UserPlugins.objects.create(**params)
+        print(plugin)
+        print(user)
+        print(release)
+        params = {
+            'user': user,
+            'plugin': plugin,
+            'defaults': {'release': release}
+        }
+        obj, was_existing = UserPlugins.objects.get_or_create(**params)
+        if not was_existing:
+            obj.release = release
+            obj.save(update_fields=['release'])
 
     @transaction.atomic
     def get(self, request, **kwargs):
@@ -84,7 +94,7 @@ class MyPluginListView(View):
             'author': username,
             'name': name,
             'version': release.version,
-            'url': reverse('plugins:download', args=(username, name)),
+            'url': reverse('plugins:download-version', args=(username, name, release.version)),
         }
 
     def get(self, request, **kwargs):
