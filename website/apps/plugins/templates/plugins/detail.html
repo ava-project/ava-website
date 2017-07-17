@@ -4,20 +4,25 @@
 
 {% block content %}
   <a href="{% url "plugins:list" %}">Back to plugin list</a>
-  <h1>Plugin detail : {{ object.name }}</h1>
+  <h1>Plugin detail : {{ plugin.name }}</h1>
   <p>by <a href="{{ plugin.author.profile_url }}">{{ plugin.author.username }}</a></p>
   <p>
     {{ release.description }}
   </p>
   <hr />
-  <p>Number of download : {{ object.nb_download }}</p>
+  <h2>Install command</h2>
+  <pre>
+avacli install {{ plugin.author.username }} {{ plugin.name }}
+  </pre>
+  <hr />
+  <p>Number of download : {{ plugin.nb_download }}</p>
   <p>
-    Number of upvote : {{ object.nb_upvote }}
+    Number of upvote : {{ plugin.nb_upvote }}
     {% if user.is_authenticated %}
       {% if user_has_upvoted %}
-        <a href="{% url 'plugins:downvote' username=object.author.username plugin_name=object.name %}">Downvote</a>
+        <a href="{% url 'plugins:downvote' username=plugin.author.username plugin_name=plugin.name %}">Downvote</a>
       {% else %}
-        <a href="{% url 'plugins:upvote' username=object.author.username plugin_name=object.name %}">Upvote</a>
+        <a href="{% url 'plugins:upvote' username=plugin.author.username plugin_name=plugin.name %}">Upvote</a>
       {% endif %}
     {% endif %}
   </p>
@@ -26,7 +31,7 @@
   </div>
   <h3>List of releases :</h3>
   <ul>
-    {% for release in object.release_set.all %}
+    {% for release in plugin.release_set.all %}
       <li><a href="?version={{ release.version }}">{{ release.version }}</a></li>
     {% endfor %}
   </ul>
@@ -45,16 +50,15 @@
   </div>
   <h3>Comments :</h3>
   {% if user.is_authenticated %}
-      {% get_comment_form for object as form %}
+      {% get_comment_form for plugin as form %}
       <form action="{% comment_form_target %}" method="POST">
       {% csrf_token %}
       {{ form.comment }}
-      {{ form.honeypot }}
       {{ form.content_type }}
       {{ form.object_pk }}
       {{ form.timestamp }}
       {{ form.security_hash }}
-      <input type="hidden" name="next" value="{{ object.url }}" />
+      <input type="hidden" name="next" value="{{ plugin.url }}" />
       <input type="submit" value="Add comment" id="id_submit" />
       </form>
   {% else %}
@@ -62,7 +66,7 @@
   {% endif %}
 
   <ul>
-    {% get_comment_list for object as comment_list %}
+    {% get_comment_list for plugin as comment_list %}
     {% for comment in comment_list %}
       <li>{{ comment }}</li>
     {% endfor %}
