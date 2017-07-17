@@ -3,6 +3,9 @@
 {% block content %}
   <h4>{{ object.username }}</h4>
   {% if object == request.user %}
+    <p>First name: {{ object.first_name }} </p>
+    <p>Last name: {{ object.last_name }} </p>
+    <p>Email: {{ object.email }} </p>
     {% if not request.user.profile.validated %}
       You must validate your profile.<br />
       <a href="{% url 'user:resend-validation-email' %}">Click here to resend an email</a><br /><br />
