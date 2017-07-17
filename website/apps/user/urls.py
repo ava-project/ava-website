@@ -21,24 +21,27 @@ urlpatterns = [
         name='logout'),
     # password reset
     url(r'^reset-password/?$',
-        django_auth_views.password_reset,
-        name='password_reset',
-        kwargs={
-            'post_reset_redirect': 'user:password_reset_done',
-            'email_template_name': 'email/password_reset_email.html',
-        }),
+        views.PasswordResetView.as_view(),
+        name='password_reset'),
     url(r'^reset-password/done/?$',
         django_auth_views.password_reset_done,
-        name='password_reset_done'),
+        name='password_reset_done',
+        kwargs={
+            'template_name': 'user/reset-password-done.html',
+        }),
     url(r'^reset-link/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         django_auth_views.password_reset_confirm,
         name='password_reset_confirm',
         kwargs={
+            'template_name': 'user/reset-password-confirm.html',
             'post_reset_redirect': 'user:password_reset_complete',
         }),
     url(r'^reset-password/compete/?$',
         django_auth_views.password_reset_complete,
-        name='password_reset_complete'),
+        name='password_reset_complete',
+        kwargs={
+            'template_name': 'user/reset-password-complete.html',
+        }),
 
     # profile
     url(r'^profile/edit/?$',

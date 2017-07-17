@@ -17,6 +17,7 @@ from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic.edit import FormView, UpdateView
 from django.views.generic import DetailView, TemplateView, View
+from django.urls import reverse, reverse_lazy
 
 from . import forms
 from .mixins import LoginMixin
@@ -53,6 +54,12 @@ class RegisterView(LoginMixin, SuccessMessageMixin, FormView):
 class LoginView(SuccessMessageMixin, django_auth_views.LoginView):
     template_name = 'user/login.html'
     success_message = 'Welcome back !'
+
+
+class PasswordResetView(SuccessMessageMixin, django_auth_views.PasswordResetView):
+    template_name = 'user/reset-password.html'
+    email_template_name = 'email/password_reset_email.html'
+    success_url = reverse_lazy('user:password_reset_done')
 
 
 class ProfileView(DetailView):

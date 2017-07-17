@@ -20,7 +20,7 @@ class ProfileInline(admin.StackedInline):
 
 
 class MyUserAdmin(admin.ModelAdmin):
-    list_display = ('email', 'first_name', 'last_name',)
+    list_display = ('username', 'email', 'first_name', 'last_name',)
     list_filter = ('is_staff', 'is_superuser')
     fieldsets = (
         (_('Personal info'), {'fields':
