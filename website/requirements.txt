@@ -16,3 +16,4 @@ psycopg2==2.7.1
 pyinotify==0.9.6
 pytz==2017.2
 raven==6.0.0
+waliki[all]==0.8.1

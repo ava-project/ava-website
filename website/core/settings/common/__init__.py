@@ -18,4 +18,5 @@ from .database import *
 from .files import *
 from .middleware import *
 from .template import *
+from .wiki import *
 from .zone import *

@@ -6,6 +6,7 @@ services:
     build: ./website
     volumes:
       - ./uploads:/data
+      - ./wiki:/wiki
     ports:
       - 8000:8000
 
