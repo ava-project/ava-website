@@ -7,11 +7,11 @@ urlpatterns = [
     url(r'^user/', include('user.urls')),
     url(r'^plugins/', include('plugins.urls')),
     url(r'^comments/', include('django_comments.urls')),
-    url(r'^wiki/', include('waliki.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 ]
 
+# debug
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [

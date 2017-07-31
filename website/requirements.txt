@@ -1,5 +1,5 @@
 avasdk==0.7.0
-django==1.11.2
+django==1.11.3
 django-contrib-comments==1.8.0
 django-debug-toolbar==1.8
 django-mail-templated==2.6.5
@@ -16,4 +16,3 @@ psycopg2==2.7.1
 pyinotify==0.9.6
 pytz==2017.2
 raven==6.0.0
-waliki[all]==0.8.1

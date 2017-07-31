@@ -12,10 +12,6 @@ INSTALLED_APPS = [
     # 'pipeline',
     'stdimage',
     'taggit',
-    # wiki
-    'waliki',
-    'waliki.git',
-    'waliki.attachments',
 
     'main',
     'plugins',
