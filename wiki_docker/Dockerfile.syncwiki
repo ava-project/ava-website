@@ -1,0 +1,12 @@
+FROM bravissimolabs/alpine-git
+
+# create the wiki
+RUN mkdir /wiki
+WORKDIR /wiki
+RUN git init
+
+# script to sync the wiki
+ADD cron_sync_wiki.sh /
+
+# run it !
+CMD /cron_sync_wiki.sh

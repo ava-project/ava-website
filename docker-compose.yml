@@ -23,6 +23,17 @@ services:
       file: docker-compose.common.yml
       service: db
 
+  wiki:
+    extends:
+      file: docker-compose.common.yml
+      service: wiki
+
+  syncwiki:
+    extends:
+      file: docker-compose.common.yml
+      service: syncwiki
+
+
 volumes:
   db-data:
     driver: local

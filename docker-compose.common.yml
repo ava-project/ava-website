@@ -14,10 +14,24 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data/
 
-  mail:
-    image: schickling/mailcatcher
+  wiki:
+    build:
+      context: ./wiki_docker
+      dockerfile: Dockerfile.wiki
     ports:
-      - 1080:1080
+      - 4567:80
+    volumes:
+      - ./wiki:/wiki
+    command: gollum --port 80 --base-path /wiki --no-edit --live-preview --user-icons gravatar
+
+  syncwiki:
+    build:
+      context: ./wiki_docker
+      dockerfile: Dockerfile.syncwiki
+    volumes:
+      - ./wiki:/wiki
+      - ./ssh:/root/.ssh
+
 
 volumes:
   db-data:
