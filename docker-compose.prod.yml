@@ -32,6 +32,16 @@ services:
       - ./public:/app/public
     command: python3 manage.py collectstatic --noinput
 
+  wiki:
+    extends:
+      file: docker-compose.common.yml
+      service: wiki
+
+  syncwiki:
+    extends:
+      file: docker-compose.common.yml
+      service: syncwiki
+
 
 volumes:
   db-data:

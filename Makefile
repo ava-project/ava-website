@@ -29,7 +29,7 @@ default: build run
 bash:
 	${COMMAND} run --rm web bash
 
-deploy: build
+deploy: build wiki
 	${MANAGE} collectstatic --noinput
 	${MANAGE} migrate
-	${COMMAND} up -d web
+	${COMMAND} up -d web wiki syncwiki
