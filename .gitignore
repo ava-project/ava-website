@@ -1,5 +1,6 @@
 /wiki
 /ssh
+/website/public
 /public
 /uploads
 config.env

@@ -9,7 +9,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mail_templated',
     'django_comments',
-    # 'pipeline',
+    'compressor',
     'stdimage',
     'taggit',
 
