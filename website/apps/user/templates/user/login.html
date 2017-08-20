@@ -8,11 +8,13 @@
     <h1>Login</h1>
     <form method="post" action="">
         {% csrf_token %}
+        {% error_text form.non_field_errors %}
         {% input_text form.username "Username or email" %}
         {% input_text form.password %}
         {% submit "Sign in" %}
     </form>
-    <a href="{% url 'user:password_reset' %}">Reset password</a>
+    <a href="{% url 'user:password_reset' %}">Forgotten password ?</a>
+    <a href="{% url 'user:register' %}">Create account</a>
   </div>
 </div>
 {% endblock %}

@@ -15,4 +15,9 @@ def input_text(field, label=None):
 
 @register.inclusion_tag('material_forms/submit.html')
 def submit(text="Submit"):
-    return {'text': text, }
+    return {'text': text}
+
+
+@register.inclusion_tag('material_forms/errors.html')
+def error_text(errors):
+    return {'errors': errors}

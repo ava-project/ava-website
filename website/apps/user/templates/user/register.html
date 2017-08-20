@@ -1,9 +1,21 @@
 {% extends "layout/main.html" %}
 
+{% load material_forms %}
+
 {% block content %}
+<div class="row">
+  <div class="col s8 offset-s2 z-depth-2 white">
+    <h1>Register</h1>
+    <p>Register to the AVA project to download plugin and contribute to the ecosystem !</p>
     <form method="post" action="">
         {% csrf_token %}
-        {{ form.as_p }}
-        <input class="btn waves-effect waves-light" type="submit" />
+        {% error_text form.non_field_errors %}
+        {% input_text form.email %}
+        {% input_text form.username %}
+        {% input_text form.password %}
+        {% submit "Create account" %}
     </form>
+    <a href="{% url 'user:login' %}">Already member ?</a>
+  </div>
+</div>
 {% endblock %}
