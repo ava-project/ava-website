@@ -13,8 +13,9 @@
         {% input_text form.password %}
         {% submit "Sign in" %}
     </form>
-    <a href="{% url 'user:password_reset' %}">Forgotten password ?</a>
-    <a href="{% url 'user:register' %}">Create account</a>
+    <br />
+    <a href="{% url 'user:password_reset' %}">Forgotten password ?</a><br />
+    <a href="{% url 'user:register' %}">Create account</a><br /><br />
   </div>
 </div>
 {% endblock %}
