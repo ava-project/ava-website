@@ -25,7 +25,7 @@ build:
 	${COMMAND} build
 
 build-travis:
-	${command} build web
+	${COMMAND} build web
 
 default: build run
 
