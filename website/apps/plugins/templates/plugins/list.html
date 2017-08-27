@@ -1,42 +1,51 @@
 {% extends "layout/main.html" %}
 
+{% load material_forms %}
+
 {% block content %}
-  <h1>Plugins list</h1>
-  <form method="get" action="">
-    <label for="search_input">Search :</label>
-    <input value="{{ search_string }}" type="text" name="search" id="search_input" />
-    <input type="submit" />
-  </form>
-  <hr />
-  <div>
-    {% for plugin in object_list %}
-      <div>
-        <a href="{{ plugin.url }}">{{ plugin.name }}</a>
-        <p>{{ plugin.last_release.description }}</p>
-        <span>{{ plugin.nb_upvote }} Upvotes</span>
-        <p>by <a href="{{ plugin.author.profile_url }}">{{ plugin.author.username }}</a></p>
+  <div class="row">
+    <h1>Plugins list</h1>
+    <p>
+      Here you can find all the plugins the community made. You can click on it to get a more detailed view of what the plugin does.
+    </p>
+    <form method="get" action="" class="col s12">
+      <div class="input-field">
+        <input id="search" type="search" value="{{ search_string }}" name="search"  required>
+        <label for="search">Search</label>
       </div>
-      <hr />
-    {% empty %}
-      <p>No result</p>
-    {% endfor %}
-  </div>
-
-  {% if is_paginated %}
-    <div class="pagination">
-      <span class="step-links">
-          {% if page_obj.has_previous %}
-              <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-          {% endif %}
-
-          <span class="current">
-              Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-          </span>
-
-          {% if page_obj.has_next %}
-              <a href="?page={{ page_obj.next_page_number }}">next</a>
-          {% endif %}
-      </span>
+      {% submit "Search" %}
+    </form>
+    <br /><br />
+    <div>
+      {% for plugin in object_list %}
+        <div>
+          <a href="{{ plugin.url }}">{{ plugin.name }}</a>
+          <p>{{ plugin.last_release.description }}</p>
+          <span>{{ plugin.nb_upvote }} Upvotes</span>
+          <p>by <a href="{{ plugin.author.profile_url }}">{{ plugin.author.username }}</a></p>
+        </div>
+        <hr />
+      {% empty %}
+        <p>No result</p>
+      {% endfor %}
     </div>
-  {% endif %}
+
+    {% if is_paginated %}
+      <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+      </div>
+    {% endif %}
+  </div>
 {% endblock %}

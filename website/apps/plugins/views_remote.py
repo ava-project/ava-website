@@ -8,7 +8,7 @@ from django.urls import reverse
 
 from user.mixins import JsonUserMustBeValidated
 from . import mixins
-from .models import Release, DownloadRelease, UserPlugins
+from .models import Release, DownloadRelease, UserPlugins, Plugin
 
 
 class PluginDetailView(mixins.PluginDetailMixin, View):
@@ -37,7 +37,8 @@ class PluginDownloadView(JsonUserMustBeValidated, mixins.PluginDetailMixin, View
             release = self.get_release(plugin)
         except Release.DoesNotExist:
             return HttpResponseBadRequest('Can\'t find this version')
-        download = DownloadRelease(plugin=plugin, release=release,
+        download = DownloadRelease(
+            plugin=plugin, release=release,
             author=self.request.user)
         download.save()
         return JsonResponse({
@@ -50,9 +51,6 @@ class PluginDownloadView(JsonUserMustBeValidated, mixins.PluginDetailMixin, View
 class PluginDownloadLinkView(View):
 
     def add_download(self, plugin, user, release):
-        print(plugin)
-        print(user)
-        print(release)
         params = {
             'user': user,
             'plugin': plugin,
@@ -79,6 +77,31 @@ class PluginDownloadLinkView(View):
         response = HttpResponse(archive.read(), content_type='application/octet-stream')
         response['Content-Disposition'] = 'inline; filename=' + archive.name
         return response
+
+
+class PluginListView(View):
+    """
+    This endpoint retrieves the list of plugins the user installed
+    """
+
+    def generate_plugin_data(self, plugin):
+        username = plugin.author.username
+        release = plugin.last_release
+        return {
+            'author': username,
+            'name': plugin.name,
+            'description': release.description,
+            'readme': release.readme,
+            'tags': list(release.tags.values_list('name', flat=True)),
+            'version': release.version,
+            'nb_upvote': plugin.nb_upvote,
+            'nb_download': plugin.nb_download,
+            'url': plugin.url_download,
+        }
+
+    def get(self, request, **kwargs):
+        plugins = Plugin.objects.all()
+        return JsonResponse([self.generate_plugin_data(plugin) for plugin in plugins], safe=False)
 
 
 class MyPluginListView(View):
