@@ -9,8 +9,6 @@ services:
       - config.env
     environment:
       - DJANGO_SETTINGS_MODULE=core.settings.prod
-    volumes:
-      - ./website:/app
     depends_on:
       - db
     command: ./entrypoints/prod.sh
