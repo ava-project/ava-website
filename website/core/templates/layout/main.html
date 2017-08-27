@@ -1,11 +1,26 @@
-<!Doctype html>
+{% load compress static %}
+
+<!DOCTYPE html>
 <html>
   <head>
     <title>AVA project</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
+    {% compress css %}
+      <link rel="stylesheet" type="text/less" href="{% static "main/css/layout.less" %}">
+      <link rel="stylesheet" type="text/less" href="{% static "main/css/nav.less" %}">
+      <link rel="stylesheet" type="text/less" href="{% static "plugins/css/list.less" %}">
+    {% endcompress %}
   </head>
   <body>
     {% include "include/menu.html" %}
-    {% block content %}{% endblock %}
+    <div id="content">
+      {% block content %}{% endblock %}
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
     {% include "include/messages.html" %}
   </body>
 </html>

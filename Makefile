@@ -24,12 +24,16 @@ container-shell:
 build:
 	${COMMAND} build
 
+build-travis:
+	${COMMAND} build web
+
 default: build run
 
 bash:
 	${COMMAND} run --rm web bash
 
 deploy: build wiki
+	${MANAGE} compress --force
 	${MANAGE} collectstatic --noinput
 	${MANAGE} migrate
 	${COMMAND} up -d web wiki syncwiki
