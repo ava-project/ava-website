@@ -19,3 +19,6 @@ SENTRY_KEY = env.get('SENTRY_KEY', None)
 if SENTRY_KEY:
     INSTALLED_APPS.append('raven.contrib.django.raven_compat')
     RAVEN_CONFIG = {'dsn': SENTRY_KEY}
+
+# compress file
+COMPRESS_ENABLED = True
