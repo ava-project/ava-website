@@ -30,6 +30,7 @@ bash:
 	${COMMAND} run --rm web bash
 
 deploy: build wiki
+	${MANAGE} compress --force
 	${MANAGE} collectstatic --noinput
 	${MANAGE} migrate
 	${COMMAND} up -d web wiki syncwiki
