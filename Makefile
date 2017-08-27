@@ -24,6 +24,9 @@ container-shell:
 build:
 	${COMMAND} build
 
+build-travis:
+	${command} build web
+
 default: build run
 
 bash:
