@@ -17,7 +17,7 @@ urlpatterns = [
         name='list'),
     url(r'^list.json/?$',
         views_remote.PluginListView.as_view(),
-        name='list'),
+        name='list-json'),
     url(r'^download/(?P<token>[^/]+)/?$',
         login_required(views_remote.PluginDownloadLinkView.as_view()),
         name='download-link'),
