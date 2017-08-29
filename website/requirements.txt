@@ -10,7 +10,7 @@ django-stdimage==2.4.2
 django-taggit==0.22.1
 docutils==0.14
 gunicorn==19.7.1
-markdown==2.6.8
+markdown==2.6.9
 mock==2.0.0
 psycopg2==2.7.1
 pyinotify==0.9.6
