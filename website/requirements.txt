@@ -1,4 +1,4 @@
-avasdk==0.7.0
+avasdk==1.0.3
 django==1.11.5
 django_compressor==2.2
 django-contrib-comments==1.8.0
