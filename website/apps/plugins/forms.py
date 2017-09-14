@@ -4,7 +4,7 @@ import avasdk
 
 from zipfile import ZipFile, BadZipFile
 
-from avasdk.plugins import validate_manifest
+from avasdk.plugins.manifest import validate_manifest
 from avasdk.plugins.hasher import hash_plugin
 from django import forms
 from django.core.validators import ValidationError
@@ -23,8 +23,10 @@ class PluginArchiveField(forms.FileField):
     def get_manifest(self, archive):
         try:
             with ZipFile(archive.temporary_file_path()) as plugin:
+                print(plugin.namelist())
                 prefix = self.get_prefix(plugin)
-                with plugin.open('{}/manifest.json'.format(prefix)) as myfile:
+                prefix = prefix + '/' if len(prefix) else ''
+                with plugin.open('{}manifest.json'.format(prefix)) as myfile:
                     manifest = json.loads(myfile.read())
                 validate_manifest(manifest)
                 return manifest
