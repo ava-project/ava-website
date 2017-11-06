@@ -14,5 +14,5 @@ markdown==2.6.9
 mock==2.0.0
 psycopg2==2.7.3.2
 pyinotify==0.9.6
-pytz==2017.2
+pytz==2017.3
 raven==6.3.0
