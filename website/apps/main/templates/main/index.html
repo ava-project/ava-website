@@ -1,6 +1,134 @@
 {% extends "layout/main.html" %}
 
+{% load static %}
+
 {% block content %}
-Page d'accueil
-<a href="{% url 'main:download' %}">Download AVA</a>
+
+<div class="ava-home z-depth-3">
+  <div class="container">
+    <div class="row">
+      <h2>Artificial Vocal Assistant</h2>
+    </div>
+    <div class="row">
+      <h5>AVA is a fully transparent, modern and simple app that lets you control your computer using your voice.
+        Because accessibility should no longer be an issue.</h5>
+    </div>
+    <div class="row">
+      <a class="buttonDownload" href="{% url 'main:download' %}">Download AVA</a>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col s4">
+    <div class="card">
+     <div class="card-image">
+       <img class="icons" src="{% static 'main/img/laptop.png' %}">
+     </div>
+     <div class="card-content">
+       <span class="card-title">CROSS-PLATFORM</span>
+       <p>AVA will help you take control of your Windows, macOS or Linux-based computer.
+         Because your OS preferences shouldn't impact the awesomeness you deserve.</p>
+     </div>
+   </div>
+  </div>
+  <div class="col s4">
+    <div class="card">
+     <div class="card-image">
+       <img class="icons" src="{% static 'main/img/plug-silhouette.png' %}">
+     </div>
+     <div class="card-content">
+       <span class="card-title">PLUG-INS</span>
+       <p>Our plug-in system gives you access to the features you need, ridiculously fast.
+         Add and remove features or sync your plug-ins between different computers with a single click.</p>
+     </div>
+   </div>
+  </div>
+  <div class="col s4">
+    <div class="card">
+     <div class="card-image">
+       <img class="icons" src="{% static 'main/img/avatar-group.png' %}">
+     </div>
+     <div class="card-content">
+       <span class="card-title">OPEN SOURCE</span>
+       <p>Geeks love their tech, and they love sharing it even more.
+          All contributions are considered, be you a novice developer or a GitHub rockstar.
+          All aboard the AVA train!</p>
+     </div>
+   </div>
+  </div>
+</div>
+
+<div class="row grey darken-3 z-depth-3">
+  <video class="responsive-video" controls>
+    <source src="{% static 'main/img/AVA.mp4' %}" type="video/mp4">
+    </video>
+</div>
+
+<div class="row">
+
+  <div class="col s12">
+  <div class="card horizontal z-depth-3">
+    <div class="card-image">
+      <img class="icons" src="{% static 'main/img/ava_ios.png' %}">
+    </div>
+    <div class="card-stacked">
+      <div class="card-content">
+        <span class="card-title">AVA COMPANION</span>
+        <p>Because you don't always have a microphone available on your computer,
+          we've designed a dead-simple yet powerful app that handles this for you.</p>
+        <ul>
+          <li><i class="small material-icons">smartphone</i>Turn your Android or iOS phone into a remote microphone.</li>
+          <li><i class="small material-icons">speaker_phone</i>Connect via WiFi, Bluetooth or a simple cable.</li>
+          <li><i class="small material-icons">flash_on</i>Because performance matters, it's only native.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="row">
+  <div class="card grey darken-3">
+    <div class="card-tabs">
+      <ul class="tabs tabs-fixed-width grey darken-3 text-pink">
+        <li class="tab"><a href="#test4"><span class="card-title">DEVELOPER</span></a></li>
+        <li class="tab"><a class="active" href="#test5"><span class="card-title">USER</span></a></li>
+        <li class="tab"><a href="#test6"><span class="card-title">COMPANY</span></a></li>
+      </ul>
+    </div>
+    <div class="card-content grey darken-2">
+      <div id="test4">
+        <ul class="card-title">
+          <li>AWESOME WORKFLOW</li>
+          <li>SEAMLESS INTEGRATION</li>
+          <li>FORK YOUR FAVORITE PLUGINS</li>
+          <li>GOT AN IDEA? JUST CODE IT!</li>
+        </ul>
+      </div>
+      <div id="test5">
+        <ul class="card-title">
+          <li>UNLIMITED USAGE</li>
+          <li>ACCESS TO ALL FREE PLUGINS</li>
+          <li>GET THE LATEST UPDATES</li>
+          <li>FORGET ABOUT CORTANA</li>
+        </ul>
+      </div>
+      <div id="test6">
+        <ul class="card-title"
+          <li>PROMOTE YOUR APP</li>
+          <li>SUBMIT YOUR CLOSED-SOURCE PLUGIN</li>
+          <li>MAKE YOUR PLUGINS FREE OR PAID</li>
+          <li>EXTENDED SUPPORT</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <a class="github-button" href="https://github.com/ava-project" data-size="large" aria-label="Follow @ava-project on GitHub">Follow @ava-project</a>
+</div>
 {% endblock %}

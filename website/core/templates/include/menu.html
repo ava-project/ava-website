@@ -1,7 +1,10 @@
+{% load static %}
 <div class="navbar-fixed">
   <nav id="top-navbar">
     <div class="nav-wrapper">
-      <a href="{% url 'main:index' %}" class="brand-logo">AVA</a>
+      <a href="{% url 'main:index' %}">
+        <img class="brand-logo" src="{% static 'main/img/2018_logo_ava_1024.png' %}"/>
+      </a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         {% if request.user.is_authenticated %}
         <li><a class="waves-effect waves-light btn" href="{% url 'plugins:upload' %}">Upload plugins</a></li>

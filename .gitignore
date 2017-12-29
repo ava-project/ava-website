@@ -97,3 +97,6 @@ ENV/
 
 # atom hide file
 .atomignore
+
+# Mac OS
+.DS_Store

@@ -1,10 +1,12 @@
 {% extends "layout/main.html" %}
 
+{% load material_forms %}
+
 {% block content %}
   <a href="{% url 'user:password_change' %}">Edit password</a>
     <form method="post" action="">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" />
+        {% submit "Save" %}
     </form>
 {% endblock %}
