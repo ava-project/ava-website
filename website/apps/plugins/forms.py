@@ -23,7 +23,6 @@ class PluginArchiveField(forms.FileField):
     def get_manifest(self, archive):
         try:
             with ZipFile(archive.temporary_file_path()) as plugin:
-                print(plugin.namelist())
                 prefix = self.get_prefix(plugin)
                 prefix = prefix + '/' if len(prefix) else ''
                 with plugin.open('{}manifest.json'.format(prefix)) as myfile:
@@ -45,6 +44,7 @@ class PluginArchiveField(forms.FileField):
         try:
             with ZipFile(archive.temporary_file_path()) as plugin:
                 prefix = self.get_prefix(plugin)
+                prefix = prefix + '/' if len(prefix) else ''
                 with plugin.open('{}/README.md'.format(prefix)) as myfile:
                     readme = myfile.read()
                 return readme

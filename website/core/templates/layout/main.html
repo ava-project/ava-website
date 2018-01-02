@@ -7,7 +7,7 @@
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
+    <link rel="stylesheet" href="{% static "main/css/materialize.css" %}">
     {% compress css %}
       <link rel="stylesheet" type="text/less" href="{% static "main/css/layout.less" %}">
       <link rel="stylesheet" type="text/less" href="{% static "main/css/nav.less" %}">
@@ -17,10 +17,55 @@
   <body>
     {% include "include/menu.html" %}
     <div id="content">
-      {% block content %}{% endblock %}
+    {% block content %}{% endblock %}
     </div>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
     {% include "include/messages.html" %}
   </body>
+
+  <footer class="footer-contact">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">CONTACT US</h5>
+          <p class="grey-text text-lighten-4">If you have any question or suggestion regarding our software, feel free to get in touch!</p>
+          <p><b>ava_2018@labeip.epitech.eu</b></p>
+        </div>
+        <div class="col l4 offset-l2 s12">
+          <h5 class="white-text">Social</h5>
+          <ul>
+            <li>
+              <a class="grey-text text-lighten-3" href="https://github.com/ava-project">
+                <div class="chip">
+                    <img src="{% static 'main/img/github-sign.png' %}"/><b>GitHub</b>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="grey-text text-lighten-3" href="https://www.facebook.com/AVAEIP/">
+                <div class="chip">
+                  <img class="contact-logo" src="{% static 'main/img/facebook-sign.png' %}"/><b>Facebook</b>
+                </div>
+              </a>
+            </li>
+            <li>
+              <a class="grey-text text-lighten-3" href="https://twitter.com/avaeip">
+                <div class="chip">
+                  <img class="contact-logo" src="{% static 'main/img/twitter-sign.png' %}"/><b>Twitter</b>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container ">
+      Copyright © 2017 AVA Epitech Innovative Project
+      </div>
+    </div>
+  </footer>
+
 </html>

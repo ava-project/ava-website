@@ -1,12 +1,175 @@
 body {
-  background-color: #fafafa;
+  background-color: #616161;
+  color: #fff;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
 
 #content {
   padding: 5em 15%;
 }
 
+.ava-home {
+  text-align: center;
+  background-image: url('https://static1.squarespace.com/static/5750805b746fb91b5f7149cb/t/576c4541ebbd1aee23f46798/1466713410577/doctype-hi-res-copy.jpg?format=1000w');
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100% !important;
+  padding: 10% 10% 0% 10% !important;
+}
+
+.card {
+  background-color: #424242;
+}
+
+.horizontal ul {
+  text-align: left !important;
+}
+
+.card-image {
+  border-bottom: 2px solid #EC407A;
+}
+.icons {
+  padding: 5% 5%;
+  width: 40% !important;
+  display: block;
+  margin: auto;
+}
+
+.card-content {
+  text-align: center;
+}
+
+.tabs {
+  background-color: #424242;
+}
+
+.responsive-video {
+  border-top: 2px solid #EC407A;
+  padding-left: 15%;
+  padding-right: 15%;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+hr {
+  color: #EC407A;
+  border-bottom: 2px solid #EC407A;
+}
+
+a {
+  color: #FF60A3;
+}
+
+.footer-contact {
+  background-color: #424242;
+  border-top: 2px solid #EC407A;
+}
+
+.chip {
+  background-color: #616161;
+  color: white;
+}
+
+.footer-copyright {
+  background-color: #FF60A3;
+  color: #333;
+  text-align: center;
+}
+
+
 /* Change the white to any color ;) */
 input:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-box-shadow: 0 0 0 30px pink inset !important;
+}
+
+// Download button
+.buttonDownload {
+	display: inline-block;
+	position: relative;
+	padding: 15px 35px;
+  // left: 50%;
+  // transform: translate(-50%);
+
+	background-color: #424242;
+	color: white;
+  border: 2px solid #EC407A;
+
+	font-family: sans-serif;
+	text-decoration: none;
+	font-size: 0.9em;
+	text-align: center;
+	text-indent: 15px;
+}
+
+.buttonDownload:hover {
+	background-color: #EC407A;
+	color: white;
+}
+
+.buttonDownload:before, .buttonDownload:after {
+	content: ' ';
+	display: block;
+	position: absolute;
+	left: 15px;
+	top: 52%;
+}
+
+/* Download box shape  */
+.buttonDownload:before {
+	width: 10px;
+	height: 2px;
+	border-style: solid;
+	border-width: 0 7px 2px;
+}
+
+/* Download arrow shape */
+.buttonDownload:after {
+	width: 0;
+	height: 0;
+	// margin-left: 3px;
+	margin-top: -7px;
+
+	border-style: solid;
+	border-width: 5px 7px 0 7px;
+	border-color: transparent;
+	border-top-color: inherit;
+
+	animation: downloadArrow 2s linear infinite;
+	animation-play-state: paused;
+}
+
+.buttonDownload:hover:before {
+	border-color: #fff;
+}
+
+.buttonDownload:hover:after {
+	border-top-color: #fff;
+	animation-play-state: running;
+}
+
+/* keyframes for the download icon anim */
+@keyframes downloadArrow {
+	/* 0% and 0.001% keyframes used as a hackish way of having the button frozen on a nice looking frame by default */
+	0% {
+		margin-top: -7px;
+		opacity: 1;
+	}
+
+	0.001% {
+		margin-top: -15px;
+		opacity: 0;
+	}
+
+	50% {
+		opacity: 1;
+	}
+
+	100% {
+		margin-top: 0;
+		opacity: 0;
+	}
 }
