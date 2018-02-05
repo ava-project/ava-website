@@ -7,7 +7,7 @@ django-mail-templated==2.6.5
 django-model-utils==3.1.1
 django-nose==1.4.5
 django-stdimage==3.0.0
-django-taggit==0.22.1
+django-taggit==0.22.2
 docutils==0.14
 gunicorn==19.7.1
 markdown==2.6.9
